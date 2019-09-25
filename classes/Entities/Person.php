@@ -7,7 +7,7 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent\Api;
+namespace RoboticEvent\Entities;
 
 use Db;
 use RoboticEvent\Database\DbQuery;

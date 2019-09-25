@@ -7,21 +7,27 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent\Api;
+namespace RoboticEvent\Entities;
 
 use Db;
 use RoboticEvent\Database\DbQuery;
 use RoboticEvent\ObjectModel;
 
-class Category extends ObjectModel {
-	/** @var $id Category ID */
+class Robot extends ObjectModel {
+	/** @var $id Robot ID */
 	public $id;
-
+	
 	/** @var string $name */
-	public $name;
+    public $name;
+    
+    /** @var string $photo */
+    public $photo;
 
-	/** @var string $description */
-	public $description;
+	/** @var int $category_id */
+	public $category_id;
+
+	/** @var int $team_id */
+	public $team_id;
 	
 	/** @var $date_add */
     public $date_add;
@@ -33,12 +39,14 @@ class Category extends ObjectModel {
      * @see ObjectModel::$definition
      */
     public static $definition = array(
-        'table' => 'category',
-        'primary' => 'category_id',
+        'table' => 'robot',
+        'primary' => 'robot_id',
         'fields' => array(
+            'team_id' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 11),
+            'category_id' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 11),
 			'name' => array('type' => self::TYPE_STRING, 'required' => true, 'validate' => 'isString', 'size' => 255),
-			'description' => array('type' => self::TYPE_STRING, 'required' => true),
-			'date_add' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
+            'photo' => array('type' => self::TYPE_STRING, 'required' => false),
+            'date_add' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
 			'date_upd' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
         )
     );

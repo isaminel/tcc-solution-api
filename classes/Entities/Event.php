@@ -7,14 +7,14 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent\Api;
+namespace RoboticEvent\Entities;
 
 use Db;
 use RoboticEvent\Database\DbQuery;
 use RoboticEvent\ObjectModel;
 
-class Team extends ObjectModel {
-	/** @var $id Team ID */
+class Event extends ObjectModel {
+	/** @var $id Event ID */
 	public $id;
 	
 	/** @var string $name */
@@ -26,11 +26,14 @@ class Team extends ObjectModel {
 	/** @var string $website */
 	public $website;
 
-	/** @var string $slogan */
-	public $slogan;
+	/** @var string $address */
+	public $address;
 
-	/** @var string $institution */
-	public $institution;
+	/** @var $date_start */
+    public $date_start;
+
+	/** @var $date_end */
+	public $date_end;
 
     /** @var string $country */
     public $country;
@@ -54,8 +57,8 @@ class Team extends ObjectModel {
      * @see ObjectModel::$definition
      */
     public static $definition = array(
-        'table' => 'team',
-        'primary' => 'team_id',
+        'table' => 'event',
+        'primary' => 'event_id',
         'fields' => array(
 			'name' => array('type' => self::TYPE_STRING, 'required' => true, 'validate' => 'isString', 'size' => 255),
 			'email' => array('type' => self::TYPE_STRING, 'required' => true, 'validate' => 'isString'),
