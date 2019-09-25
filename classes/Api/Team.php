@@ -7,7 +7,7 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent\Person;
+namespace RoboticEvent\Api;
 
 use Db;
 use RoboticEvent\Database\DbQuery;

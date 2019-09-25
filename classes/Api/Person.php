@@ -7,21 +7,39 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent\Product;
+namespace RoboticEvent\Api;
 
 use Db;
 use RoboticEvent\Database\DbQuery;
 use RoboticEvent\ObjectModel;
 
-class Category extends ObjectModel {
-	/** @var $id Category ID */
+class Person extends ObjectModel {
+	/** @var $id Person ID */
 	public $id;
 
+	/** @var int $team_id */
+	public $team_id;
+	
 	/** @var string $name */
 	public $name;
 
-	/** @var string $description */
-	public $description;
+	/** @var string $email */
+	public $email;
+
+	/** @var string $rg */
+	public $rg;
+
+	/** @var string $cpf */
+	public $cpf;
+
+	/** @var $date_of_birth */
+	public $date_of_birth;
+
+	/** @var string $phone */
+	public $phone
+
+	/** @var string $photo */
+    public $photo;
 	
 	/** @var $date_add */
     public $date_add;
@@ -33,11 +51,17 @@ class Category extends ObjectModel {
      * @see ObjectModel::$definition
      */
     public static $definition = array(
-        'table' => 'category',
-        'primary' => 'category_id',
+        'table' => 'person',
+        'primary' => 'person_id',
         'fields' => array(
+			'team_id' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 11),
 			'name' => array('type' => self::TYPE_STRING, 'required' => true, 'validate' => 'isString', 'size' => 255),
-			'description' => array('type' => self::TYPE_STRING, 'required' => true),
+			'email' => array('type' => self::TYPE_STRING, 'required' => true),
+			'rg' => array('type' => self::TYPE_STRING, 'required' => true),
+			'cpf' => array('type' => self::TYPE_STRING, 'required' => true),
+			'date_of_birth' => array('type' => self::TYPE_DATE, 'required' => true),
+			'phone' => array('type' => self::TYPE_STRING, 'required' => false),
+			'photo' => array('type' => self::TYPE_STRING, 'required' => false),
 			'date_add' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
 			'date_upd' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
         )
