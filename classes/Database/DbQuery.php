@@ -1,13 +1,13 @@
 <?php
 /**
- * @package    BestShop
+ * @package    RoboticEvent
  * @author     davisonpro.coder@gmail.com
- * @copyright  2018 BestShop
+ * @copyright  2018 RoboticEvent
  * @version    1.0.0
  * @since      File available since Release 1.0.0
  */
 
-namespace BestShop\Database;
+namespace RoboticEvent\Database;
 
 /**
  * SQL query builder

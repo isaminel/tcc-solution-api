@@ -7,36 +7,36 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace BestShop\v1;
+namespace RoboticEvent\v1;
 
 use Db;
-use BestShop\Route;
-use BestShop\Database\DbQuery;
-use BestShop\Product\Product as ProductObject;
-use BestShop\Product\Category as CategoryObject;
-use BestShop\Util\ArrayUtils;
-use BestShop\Validate;
+use RoboticEvent\Route;
+use RoboticEvent\Database\DbQuery;
+use RoboticEvent\Event\Event as EventObject;
+use RoboticEvent\Event\Category as CategoryObject;
+use RoboticEvent\Util\ArrayUtils;
+use RoboticEvent\Validate;
 
-class Product extends Route {
+class Event extends Route {
 
-	public function getProducts() {
+	public function getEvents() {
 		$api = $this->api;
 
 		// Build query
 		$sql = new DbQuery();
 		// Build SELECT
-		$sql->select('product.*');
+		$sql->select('event.*');
 		// Build FROM
-		$sql->from('product', 'product');
-		$products = Db::getInstance()->executeS($sql);
+		$sql->from('event', 'event');
+		$events = Db::getInstance()->executeS($sql);
 
 		return $api->response([
 			'success' => true,
-			'products' => $products
+			'events' => $events
 		]);
 	}
 
-	public function addProduct() {
+	public function addEvent() {
 		$api = $this->api;
 		$payload = $api->request()->post(); 
 
@@ -48,28 +48,28 @@ class Product extends Route {
 		if (!Validate::isGenericName($name)) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Enter a valid product name'
+				'message' => 'Enter a valid event name'
 			]);
 		}
 
 		if (!Validate::isCleanHtml($description)) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Enter a valid description of the product'
+				'message' => 'Enter a valid description of the event'
 			]);
 		}
 
 		if (!Validate::isPrice($price)) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Enter a valid price of the product'
+				'message' => 'Enter a valid price of the event'
 			]);
 		}
 
 		if(!Validate::isInt($category_id)) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Enter a valid category ID of the product'
+				'message' => 'Enter a valid category ID of the event'
 			]);
 		}
 
@@ -81,30 +81,30 @@ class Product extends Route {
 			]);
 		}
 
-		$product = new ProductObject();
-		$product->name = $name;
-		$product->description = $description;
-		$product->price = (float) $price;
-		$product->category_id = $category->id;
+		$event = new EventObject();
+		$event->name = $name;
+		$event->description = $description;
+		$event->price = (float) $price;
+		$event->category_id = $category->id;
 
-		$ok = $product->save();
-		// or $product->add();
+		$ok = $event->save();
+		// or $event->add();
 
 		if (!$ok) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Unable to create product'
+				'message' => 'Unable to create event'
 			]);
 		}
 
 		return $api->response([
 			'success' => true,
-			'message' => 'Product was Created',
-			'product' => [
-				'product_id' => $product->id,
-				'name' => $product->id,
-				'description' => $product->description,
-				'price' => (float) $product->price,
+			'message' => 'Event was Created',
+			'event' => [
+				'event_id' => $event->id,
+				'name' => $event->id,
+				'description' => $event->description,
+				'price' => (float) $event->price,
 				'category' => [
 					'category_id' => $category->id,
 					'name' => $category->name,
@@ -114,28 +114,28 @@ class Product extends Route {
 		]);
 	}
 
-	public function getProduct( $productId ) {
+	public function getEvent( $eventId ) {
 		$api = $this->api;
 
-		$product = new ProductObject( (int) $productId );
-		if(!Validate::isLoadedObject($product)) {
+		$event = new EventObject( (int) $eventId );
+		if(!Validate::isLoadedObject($event)) {
 			$api->response->setStatus(404);
 			return $api->response([
 				'success' => false,
-				'message' => 'Product was not found'
+				'message' => 'Event was not found'
 			]);
 		}
 		
-		$category = new CategoryObject( $product->category_id );
+		$category = new CategoryObject( $event->category_id );
 
 		return $api->response([
 			'success' => true,
-			'message' => 'Product was Created',
-			'product' => [
-				'product_id' => $product->id,
-				'name' => $product->name,
-				'description' => $product->description,
-				'price' => (float) $product->price,
+			'message' => 'Event was Created',
+			'event' => [
+				'event_id' => $event->id,
+				'name' => $event->name,
+				'description' => $event->description,
+				'price' => (float) $event->price,
 				'category' => [
 					'category_id' => $category->id,
 					'name' => $category->name,
@@ -145,16 +145,16 @@ class Product extends Route {
 		]);
 	}
 
-	public function updateProduct($productId ) {
+	public function updateEvent($eventId ) {
 		$api = $this->api;
 		$payload = $api->request()->post(); 
 
-		$product = new ProductObject( (int) $productId );
-		if(!Validate::isLoadedObject($product)) {
+		$event = new EventObject( (int) $eventId );
+		if(!Validate::isLoadedObject($event)) {
 			$api->response->setStatus(404);
 			return $api->response([
 				'success' => false,
-				'message' => 'Product was not found'
+				'message' => 'Event was not found'
 			]);
 		}
 
@@ -163,11 +163,11 @@ class Product extends Route {
 			if ( !Validate::isGenericName($name) ) {
 				return $api->response([
 					'success' => false,
-					'message' => 'Enter a valid product name'
+					'message' => 'Enter a valid event name'
 				]);
 			}
 
-			$product->name = $name;
+			$event->name = $name;
 		}
 
 		if (ArrayUtils::has($payload, 'description')) {
@@ -175,11 +175,11 @@ class Product extends Route {
 			if (!Validate::isCleanHtml($description)) {
 				return $api->response([
 					'success' => false,
-					'message' => 'Enter a valid description of the product'
+					'message' => 'Enter a valid description of the event'
 				]);
 			}
 
-			$product->description = $description;
+			$event->description = $description;
 		}
 
 		if (ArrayUtils::has($payload, 'description')) {
@@ -187,11 +187,11 @@ class Product extends Route {
 			if (!Validate::isPrice($price)) {
 				return $api->response([
 					'success' => false,
-					'message' => 'Enter a valid price of the product'
+					'message' => 'Enter a valid price of the event'
 				]);
 			}
 
-			$product->price = $price;
+			$event->price = $price;
 		}
 
 		if (ArrayUtils::has($payload, 'category_id')) {
@@ -199,7 +199,7 @@ class Product extends Route {
 			if(!Validate::isInt($category_id)) {
 				return $api->response([
 					'success' => false,
-					'message' => 'Enter a valid category ID of the product'
+					'message' => 'Enter a valid category ID of the event'
 				]);
 			}
 
@@ -211,58 +211,58 @@ class Product extends Route {
 				]);
 			}
 
-			$product->category_id = $category->id;
+			$event->category_id = $category->id;
 		}
 
 		return $api->response([
 			'success' => false,
-			'message' => 'Unable to update product'
+			'message' => 'Unable to update event'
 		]);
 
-		$ok = $product->save();
-		// or product->update()
+		$ok = $event->save();
+		// or event->update()
 		
 		if (!$ok) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Unable to update product'
+				'message' => 'Unable to update event'
 			]);
 		}
 
 		return $api->response([
 			'success' => true,
-			'message' => 'Product updated successfully'
+			'message' => 'Event updated successfully'
 		]);
 	}
 
-	public function deleteProduct( $productId ) {
+	public function deleteEvent( $eventId ) {
 		$api = $this->api;
 
-		$product = new ProductObject( (int) $productId );
-		if(!Validate::isLoadedObject($product)) {
+		$event = new EventObject( (int) $eventId );
+		if(!Validate::isLoadedObject($event)) {
 			$api->response->setStatus(404);
 			return $api->response([
 				'success' => false,
-				'message' => 'Product was not found'
+				'message' => 'Event was not found'
 			]);
 		}
 
-		$ok = $product->delete();
+		$ok = $event->delete();
 
 		if (!$ok) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Unable to delete product'
+				'message' => 'Unable to delete event'
 			]);
 		}
 
 		return $api->response([
 			'success' => true,
-			'message' => 'Product deleted successfully'
+			'message' => 'Event deleted successfully'
 		]);
 	}
 	
-	public function searchProducts() {
+	public function searchEvents() {
 		$api = $this->api;
 		$params = $api->request()->get(); 
 
@@ -272,25 +272,25 @@ class Product extends Route {
 		if(!$name && !$description) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Enter name or description of the product'
+				'message' => 'Enter name or description of the event'
 			]);
 		}
 
 		// Build query
 		$sql = new DbQuery();
 		// Build SELECT
-		$sql->select('product.*');
+		$sql->select('event.*');
 		// Build FROM
-		$sql->from('product', 'product');
+		$sql->from('event', 'event');
 
 		// prevent sql from searching a NULL value if wither name or description is not provided eg. WHERE name = null
 		$where_clause = array();
 		if($name) {
-			$where_clause[] = 'product.name LIKE \'%' . pSQL($name) . '%\'';
+			$where_clause[] = 'event.name LIKE \'%' . pSQL($name) . '%\'';
 		}
 
 		if ($description) {
-			$where_clause[] = 'product.description LIKE \'%' . pSQL($description) . '%\'';
+			$where_clause[] = 'event.description LIKE \'%' . pSQL($description) . '%\'';
 		}
 
 		// join the search terms
@@ -299,11 +299,11 @@ class Product extends Route {
 		// Build WHERE
 		$sql->where($where_clause);
 
-		$products = Db::getInstance()->executeS($sql);
+		$events = Db::getInstance()->executeS($sql);
 
 		return $api->response([
 			'success' => true,
-			'products' => $products
+			'events' => $events
 		]);
 	}
 }

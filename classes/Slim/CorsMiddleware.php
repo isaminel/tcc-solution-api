@@ -7,10 +7,10 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace BestShop\Slim;
+namespace RoboticEvent\Slim;
 
-use BestShop\Util\ArrayUtils;
-use BestShop\Util\StringUtils;
+use RoboticEvent\Util\ArrayUtils;
+use RoboticEvent\Util\StringUtils;
 
 use Slim\Middleware;
 

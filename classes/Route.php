@@ -7,9 +7,9 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace BestShop;
+namespace RoboticEvent;
 
-use BestShop\Api;
+use RoboticEvent\Api;
 
 abstract class Route
 {

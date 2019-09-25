@@ -7,7 +7,7 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace BestShop\Util;
+namespace RoboticEvent\Util;
 
 class ArrayUtils {
     /**

@@ -1,33 +1,27 @@
 <?php 
 /**
- * @package    BestShop
+ * @package    RoboticEvent
  * @author     Davison Pro <davisonpro.coder@gmail.com>
- * @copyright  2018 BestShop
+ * @copyright  2018 RoboticEvent
  * @version    1.0.0
  * @since      File available since Release 1.0.0
  */
 
-namespace BestShop\Product;
+namespace RoboticEvent\Product;
 
 use Db;
-use BestShop\Database\DbQuery;
-use BestShop\ObjectModel;
+use RoboticEvent\Database\DbQuery;
+use RoboticEvent\ObjectModel;
 
-class Product extends ObjectModel {
-	/** @var $id Product ID */
+class Category extends ObjectModel {
+	/** @var $id Category ID */
 	public $id;
 
-	/** @var int $category_id */
-	public $category_id;
-	
 	/** @var string $name */
 	public $name;
 
 	/** @var string $description */
 	public $description;
-	
-	/** @var int $price */
-	public $price = 0;    
 	
 	/** @var $date_add */
     public $date_add;
@@ -39,13 +33,11 @@ class Product extends ObjectModel {
      * @see ObjectModel::$definition
      */
     public static $definition = array(
-        'table' => 'product',
-        'primary' => 'product_id',
+        'table' => 'category',
+        'primary' => 'category_id',
         'fields' => array(
-			'category_id' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 11),
-			'name' => array('type' => self::TYPE_STRING, 'required' => true, 'validate' => 'isString', 'size' => 32),
+			'name' => array('type' => self::TYPE_STRING, 'required' => true, 'validate' => 'isString', 'size' => 255),
 			'description' => array('type' => self::TYPE_STRING, 'required' => true),
-			'price' => array('type' => self::TYPE_FLOAT, 'required' => true),
 			'date_add' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
 			'date_upd' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
         )

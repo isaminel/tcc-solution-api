@@ -7,14 +7,14 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace BestShop;
+namespace RoboticEvent;
 
 use Slim\Http\Util;
 use Slim\Slim;
-use BestShop\Util\ArrayUtils;
-use BestShop\Slim\BaseResponse;
-use BestShop\Slim\BaseRequest;
-use BestShop\Slim\Environment;
+use RoboticEvent\Util\ArrayUtils;
+use RoboticEvent\Slim\BaseResponse;
+use RoboticEvent\Slim\BaseRequest;
+use RoboticEvent\Slim\Environment;
 
 /**
  * Api

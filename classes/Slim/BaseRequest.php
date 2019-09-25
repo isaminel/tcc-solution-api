@@ -7,7 +7,7 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace BestShop\Slim;
+namespace RoboticEvent\Slim;
 
 use Slim\Http\Request;
 use Slim\Http\Util;

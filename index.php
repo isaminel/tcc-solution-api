@@ -8,7 +8,7 @@
  */
 
  // Namespaces
-define('API_NAMESPACE',          'BestShop');
+define('API_NAMESPACE',          'RoboticEvent');
 define('API_DIR_ROOT',            dirname(__FILE__));
 define('API_DIR_CLASSES',         API_DIR_ROOT . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR);
 define('API_DIR_CONTROLLERS',     API_DIR_ROOT . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR);
@@ -17,11 +17,12 @@ require_once API_DIR_ROOT . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR
 require_once API_DIR_ROOT . DIRECTORY_SEPARATOR . 'autoload.php'; 
 require_once API_DIR_ROOT . DIRECTORY_SEPARATOR . 'functions.php'; 
 
-use BestShop\Api;
-use BestShop\Database\DbQuery;
-use BestShop\Database\DbCore;
-use BestShop\Database\DbPDOCore;
-use BestShop\Database\DbMySQLiCore;
+use Env;
+use RoboticEvent\Api;
+use RoboticEvent\Database\DbQuery;
+use RoboticEvent\Database\DbCore;
+use RoboticEvent\Database\DbPDOCore;
+use RoboticEvent\Database\DbMySQLiCore;
 
 abstract class Db extends DbCore {};
 class DbPDO extends DbPDOCore {};
@@ -30,13 +31,13 @@ class DbMySQLi extends DbMySQLiCore {};
 /** CORS Middleware */
 $config = array(
 	/** MySQL database name */
-	'database_name' => 'rest_api',
+	'database_name' => $_ENV['DB_NAME'],
 	/** MySQL hostname */
-	'database_host' => 'localhost',
+	'database_host' => $_ENV['DB_HOST'],
 	/** MySQL database username */
-	'database_user' => 'root',
+	'database_user' => $_ENV['DB_USERNAME'],
 	/** MySQL database password */ 
-	'database_password' => 'password',
+	'database_password' => $_ENV['DB_PASSWORD'],
 	/** MySQL Database Table prefix. */
 	'database_prefix' => '',
 	/** preferred database */
@@ -67,7 +68,7 @@ $api = new Api([
     'debug' => true
 ]);
 
-$api->add(new \BestShop\Slim\CorsMiddleware());
+$api->add(new \RoboticEvent\Slim\CorsMiddleware());
 $api->config('debug', true);
 
 /**
@@ -78,32 +79,100 @@ $requestPayload = $api->request->post();
 
 $api->group('/api', function () use ($api) {
 	$api->group('/v1', function () use ($api) {
-		/** Get all Products */
-		$api->get('/products?', '\BestShop\v1\Product:getProducts')->name('get_products');
+		/** Get all People */
+		$api->get('/people?', '\RoboticEvent\v1\Person:getPeople')->name('get_people');
 		
-		/** Add a Product */
-		$api->post('/products?', '\BestShop\v1\Product:addProduct')->name('add_products');
-	
-		/** Get a single Product */
-		$api->get('/products/:productId?', '\BestShop\v1\Product:getProduct')->name('add_product');
+		/** Get people by Team */
+		$api->get('/people/:teamId:?', '\RoboticEvent\v1\Person:getPeople')->name('get_people');
 
-		/** Update a single Product */
-		$api->patch('/products/:productId?', '\BestShop\v1\Product:updateProduct')->name('update_product');
+		/** Get people by Event */
+		$api->get('/people/:eventId:?', '\RoboticEvent\v1\Person:getPeople')->name('get_people');
+
+		/** Add a Person */
+		$api->post('/people?', '\RoboticEvent\v1\Person:addPerson')->name('add_people');
 	
-		$api->delete('/products/:productId?', '\BestShop\v1\Product:deleteProduct')->name('delete_product');
+		/** Get a single Person */
+		$api->get('/people/:personId?', '\RoboticEvent\v1\Person:getPerson')->name('get_person');
+
+		/** Update a single Person */
+		$api->patch('/people/:personId?', '\RoboticEvent\v1\Person:updatePerson')->name('update_person');
+	
+		/** Delete a Person */
+		$api->delete('/people/:personId?', '\RoboticEvent\v1\Person:deletePerson')->name('delete_person');
+
+		/** search people */
+		$api->get('/people/search?', '\RoboticEvent\v1\Person:searchPeople')->name('search_people');
+
 		
+		/** Get all Teams */
+		$api->get('/teams?', '\RoboticEvent\v1\Team:getTeams')->name('get_teams');
+		
+		/** Add a Team */
+		$api->post('/teams?', '\RoboticEvent\v1\Team:addTeam')->name('add_teams');
+	
+		/** Get a single Team */
+		$api->get('/teams/:teamId?', '\RoboticEvent\v1\Team:getTeam')->name('get_team');
+
+		/** Update a single Team */
+		$api->patch('/teams/:teamId?', '\RoboticEvent\v1\Team:updateTeam')->name('update_team');
+	
+		/** Delete a Team */
+		$api->delete('/teams/:teamId?', '\RoboticEvent\v1\Team:deleteTeam')->name('delete_team');
+
+		/** search Teams */
+		$api->get('/teams/search?', '\RoboticEvent\v1\Team:searchTeams')->name('search_teams');
+
+
+		/** Get all Robots */
+		$api->get('/robots?', '\RoboticEvent\v1\Robot:getRobots')->name('get_robots');
+		
+		/** Get Robots by Team */
+		$api->get('/robots/:teamId:?', '\RoboticEvent\v1\Robot:getRobots')->name('get_robots');
+
+		/** Add a Robot */
+		$api->post('/robots?', '\RoboticEvent\v1\Robot:addRobot')->name('add_robots');
+	
+		/** Get a single Robot */
+		$api->get('/robots/:robotId?', '\RoboticEvent\v1\Robot:getRobot')->name('get_robot');
+
+		/** Update a single Robot */
+		$api->patch('/robots/:robotId?', '\RoboticEvent\v1\Robot:updateRobot')->name('update_robot');
+	
+		/** Delete a Robot */
+		$api->delete('/robots/:robotId?', '\RoboticEvent\v1\Robot:deletePerson')->name('delete_person');
+
+		/** search Robots */
+		$api->get('/robots/search?', '\RoboticEvent\v1\Robot:searchRobots')->name('search_robots');
+
+		/** Get all Events */
+		$api->get('/events?', '\RoboticEvent\v1\Event:getEvents')->name('get_events');
+		
+		/** Add a Event */
+		$api->post('/events?', '\RoboticEvent\v1\Event:addEvent')->name('add_events');
+	
+		/** Get a single Event */
+		$api->get('/events/:eventId?', '\RoboticEvent\v1\Event:getEvent')->name('get_event');
+
+		/** Update a single Event */
+		$api->patch('/events/:eventId?', '\RoboticEvent\v1\Event:updateEvent')->name('update_event');
+	
+		/** Delete a Event */
+		$api->delete('/events/:eventId?', '\RoboticEvent\v1\Event:deleteEvent')->name('delete_event');
+
+		/** search Events */
+		$api->get('/events/search?', '\RoboticEvent\v1\Event:searchEvents')->name('search_events');
+
+
 		/** Grouping Category Endpoints */
 		$api->group('/categories', function () use ($api) {
 			/** Get all Categories */
-			$api->get('/?', '\BestShop\v1\Category:getCategories')->name('get_categories');
+			$api->get('/?', '\RoboticEvent\v1\Category:getCategories')->name('get_categories');
 			
 			/** Add a Category */
-			$api->post('/?', '\BestShop\v1\Category:addCategory')->name('add_category');
+			$api->post('/?', '\RoboticEvent\v1\Category:addCategory')->name('add_category');
 	
 		});
 		
-		/** search products */
-		$api->get('/search?', '\BestShop\v1\Product:searchProducts')->name('search_products');
 	});
 });
 
