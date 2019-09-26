@@ -17,6 +17,8 @@ require_once API_DIR_ROOT . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR
 require_once API_DIR_ROOT . DIRECTORY_SEPARATOR . 'autoload.php'; 
 require_once API_DIR_ROOT . DIRECTORY_SEPARATOR . 'functions.php'; 
 
+require_once 'env.php';
+
 use Env;
 use RoboticEvent\Api;
 use RoboticEvent\Database\DbQuery;
@@ -31,13 +33,13 @@ class DbMySQLi extends DbMySQLiCore {};
 /** CORS Middleware */
 $config = array(
 	/** MySQL database name */
-	'database_name' => $_ENV['DB_NAME'],
+	'database_name' => 'robotic_events', //$_ENV['DB_NAME'],
 	/** MySQL hostname */
-	'database_host' => $_ENV['DB_HOST'],
+	'database_host' => 'localhost', // $_ENV['DB_HOST'],
 	/** MySQL database username */
-	'database_user' => $_ENV['DB_USERNAME'],
+	'database_user' => 'root', //$_ENV['DB_USERNAME'],
 	/** MySQL database password */ 
-	'database_password' => $_ENV['DB_PASSWORD'],
+	'database_password' => 'c1v1l4d4', //$_ENV['DB_PASSWORD'],
 	/** MySQL Database Table prefix. */
 	'database_prefix' => '',
 	/** preferred database */
@@ -80,93 +82,96 @@ $requestPayload = $api->request->post();
 $api->group('/api', function () use ($api) {
 	$api->group('/v1', function () use ($api) {
 		/** Get all People */
-		$api->get('/people?', '\RoboticEvent\v1\Person:getPeople')->name('get_people');
+		// $api->get('/people?', '\RoboticEvent\v1\Person:getPeople')->name('get_people');
 		
-		/** Get people by Team */
-		$api->get('/people/:teamId:?', '\RoboticEvent\v1\Person:getPeople')->name('get_people');
+		// /** Get people by Team */
+		// $api->get('/people/:teamId:?', '\RoboticEvent\v1\Person:getPeople')->name('get_people');
 
-		/** Get people by Event */
-		$api->get('/people/:eventId:?', '\RoboticEvent\v1\Person:getPeople')->name('get_people');
+		// /** Get people by Event */
+		// $api->get('/people/:eventId:?', '\RoboticEvent\v1\Person:getPeople')->name('get_people');
 
-		/** Add a Person */
-		$api->post('/people?', '\RoboticEvent\v1\Person:addPerson')->name('add_people');
+		// /** Add a Person */
+		// $api->post('/people?', '\RoboticEvent\v1\Person:addPerson')->name('add_people');
 	
-		/** Get a single Person */
-		$api->get('/people/:personId?', '\RoboticEvent\v1\Person:getPerson')->name('get_person');
+		// /** Get a single Person */
+		// $api->get('/people/:personId?', '\RoboticEvent\v1\Person:getPerson')->name('get_person');
 
-		/** Update a single Person */
-		$api->patch('/people/:personId?', '\RoboticEvent\v1\Person:updatePerson')->name('update_person');
+		// /** Update a single Person */
+		// $api->patch('/people/:personId?', '\RoboticEvent\v1\Person:updatePerson')->name('update_person');
 	
-		/** Delete a Person */
-		$api->delete('/people/:personId?', '\RoboticEvent\v1\Person:deletePerson')->name('delete_person');
+		// /** Delete a Person */
+		// $api->delete('/people/:personId?', '\RoboticEvent\v1\Person:deletePerson')->name('delete_person');
 
-		/** search people */
-		$api->get('/people/search?', '\RoboticEvent\v1\Person:searchPeople')->name('search_people');
+		// /** search people */
+		// $api->get('/people/search?', '\RoboticEvent\v1\Person:searchPeople')->name('search_people');
 
 		
-		/** Get all Teams */
-		$api->get('/teams?', '\RoboticEvent\v1\Team:getTeams')->name('get_teams');
+		// /** Get all Teams */
+		// $api->get('/teams?', '\RoboticEvent\v1\Team:getTeams')->name('get_teams');
 		
-		/** Add a Team */
-		$api->post('/teams?', '\RoboticEvent\v1\Team:addTeam')->name('add_teams');
+		// /** Add a Team */
+		// $api->post('/teams?', '\RoboticEvent\v1\Team:addTeam')->name('add_teams');
 	
-		/** Get a single Team */
-		$api->get('/teams/:teamId?', '\RoboticEvent\v1\Team:getTeam')->name('get_team');
+		// /** Get a single Team */
+		// $api->get('/teams/:teamId?', '\RoboticEvent\v1\Team:getTeam')->name('get_team');
 
-		/** Update a single Team */
-		$api->patch('/teams/:teamId?', '\RoboticEvent\v1\Team:updateTeam')->name('update_team');
+		// /** Update a single Team */
+		// $api->patch('/teams/:teamId?', '\RoboticEvent\v1\Team:updateTeam')->name('update_team');
 	
-		/** Delete a Team */
-		$api->delete('/teams/:teamId?', '\RoboticEvent\v1\Team:deleteTeam')->name('delete_team');
+		// /** Delete a Team */
+		// $api->delete('/teams/:teamId?', '\RoboticEvent\v1\Team:deleteTeam')->name('delete_team');
 
-		/** search Teams */
-		$api->get('/teams/search?', '\RoboticEvent\v1\Team:searchTeams')->name('search_teams');
+		// /** search Teams */
+		// $api->get('/teams/search?', '\RoboticEvent\v1\Team:searchTeams')->name('search_teams');
 
 
-		/** Get all Robots */
-		$api->get('/robots?', '\RoboticEvent\v1\Robot:getRobots')->name('get_robots');
+		// /** Get all Robots */
+		// $api->get('/robots?', '\RoboticEvent\v1\Robot:getRobots')->name('get_robots');
 		
-		/** Get Robots by Team */
-		$api->get('/robots/:teamId:?', '\RoboticEvent\v1\Robot:getRobots')->name('get_robots');
+		// /** Get Robots by Team */
+		// $api->get('/robots/:teamId:?', '\RoboticEvent\v1\Robot:getRobots')->name('get_robots');
 
-		/** Add a Robot */
-		$api->post('/robots?', '\RoboticEvent\v1\Robot:addRobot')->name('add_robots');
+		// /** Add a Robot */
+		// $api->post('/robots?', '\RoboticEvent\v1\Robot:addRobot')->name('add_robots');
 	
-		/** Get a single Robot */
-		$api->get('/robots/:robotId?', '\RoboticEvent\v1\Robot:getRobot')->name('get_robot');
+		// /** Get a single Robot */
+		// $api->get('/robots/:robotId?', '\RoboticEvent\v1\Robot:getRobot')->name('get_robot');
 
-		/** Update a single Robot */
-		$api->patch('/robots/:robotId?', '\RoboticEvent\v1\Robot:updateRobot')->name('update_robot');
+		// /** Update a single Robot */
+		// $api->patch('/robots/:robotId?', '\RoboticEvent\v1\Robot:updateRobot')->name('update_robot');
 	
-		/** Delete a Robot */
-		$api->delete('/robots/:robotId?', '\RoboticEvent\v1\Robot:deletePerson')->name('delete_person');
+		// /** Delete a Robot */
+		// $api->delete('/robots/:robotId?', '\RoboticEvent\v1\Robot:deletePerson')->name('delete_person');
 
-		/** search Robots */
-		$api->get('/robots/search?', '\RoboticEvent\v1\Robot:searchRobots')->name('search_robots');
+		// /** search Robots */
+		// $api->get('/robots/search?', '\RoboticEvent\v1\Robot:searchRobots')->name('search_robots');
 
-		/** Get all Events */
-		$api->get('/events?', '\RoboticEvent\v1\Event:getEvents')->name('get_events');
+		// /** Get all Events */
+		// $api->get('/events?', '\RoboticEvent\v1\Event:getEvents')->name('get_events');
 		
-		/** Add a Event */
-		$api->post('/events?', '\RoboticEvent\v1\Event:addEvent')->name('add_events');
+		// /** Add a Event */
+		// $api->post('/events?', '\RoboticEvent\v1\Event:addEvent')->name('add_events');
 	
-		/** Get a single Event */
-		$api->get('/events/:eventId?', '\RoboticEvent\v1\Event:getEvent')->name('get_event');
+		// /** Get a single Event */
+		// $api->get('/events/:eventId?', '\RoboticEvent\v1\Event:getEvent')->name('get_event');
 
-		/** Update a single Event */
-		$api->patch('/events/:eventId?', '\RoboticEvent\v1\Event:updateEvent')->name('update_event');
+		// /** Update a single Event */
+		// $api->patch('/events/:eventId?', '\RoboticEvent\v1\Event:updateEvent')->name('update_event');
 	
-		/** Delete a Event */
-		$api->delete('/events/:eventId?', '\RoboticEvent\v1\Event:deleteEvent')->name('delete_event');
+		// /** Delete a Event */
+		// $api->delete('/events/:eventId?', '\RoboticEvent\v1\Event:deleteEvent')->name('delete_event');
 
-		/** search Events */
-		$api->get('/events/search?', '\RoboticEvent\v1\Event:searchEvents')->name('search_events');
+		// /** search Events */
+		// $api->get('/events/search?', '\RoboticEvent\v1\Event:searchEvents')->name('search_events');
 
 
 		/** Grouping Category Endpoints */
 		$api->group('/categories', function () use ($api) {
 			/** Get all Categories */
 			$api->get('/?', '\RoboticEvent\v1\Category:getCategories')->name('get_categories');
+
+			/** Categories by Event */
+			$api->get('/:eventId?', '\RoboticEvent\v1\Category:getCategories')->name('get_categories');
 			
 			/** Add a Category */
 			$api->post('/?', '\RoboticEvent\v1\Category:addCategory')->name('add_category');

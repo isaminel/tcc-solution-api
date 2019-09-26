@@ -7,14 +7,14 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace BestShop\v1;
+namespace RoboticEvent\v1;
 
 use Db;
-use BestShop\Route;
-use BestShop\Database\DbQuery;
-use BestShop\Product\Category as CategoryObject;
-use BestShop\Util\ArrayUtils;
-use BestShop\Validate;
+use RoboticEvent\Route;
+use RoboticEvent\Database\DbQuery;
+use RoboticEvent\Product\Category as CategoryObject;
+use RoboticEvent\Util\ArrayUtils;
+use RoboticEvent\Validate;
 
 class Category extends Route {
 	public function getCategories() {

@@ -129,3 +129,9 @@ INSERT INTO `person_type` (`name`, `description`) VALUES
 ('Juíz', 'Juíz do evento'),
 ('Capitão', 'Capitão de equipe'),
 ('Voluntário', 'Voluntário não-juíz');
+
+INSERT INTO `event` (`name`, `date_start`, `date_end`, `date_add`)
+VALUES
+('II Summit de Robótica Católica-SC', '2019-11-15 00:00:00', '2019-11-17 23:59:59', '2019-09-25 00:00:00');
+
+
