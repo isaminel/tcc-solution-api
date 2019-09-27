@@ -171,7 +171,7 @@ $api->group('/api', function () use ($api) {
 			$api->get('/?', '\RoboticEvent\v1\Category:getCategories')->name('get_categories');
 
 			/** Categories by Event */
-			$api->get('/:eventId?', '\RoboticEvent\v1\Category:getCategories')->name('get_categories');
+			$api->get('/:eventId?', '\RoboticEvent\v1\Category:getCategoriesByEventId')->name('get_categories_by_event_id');
 			
 			/** Add a Category */
 			$api->post('/?', '\RoboticEvent\v1\Category:addCategory')->name('add_category');

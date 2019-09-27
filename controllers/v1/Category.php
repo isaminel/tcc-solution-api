@@ -34,6 +34,27 @@ class Category extends Route {
 		]);
 	}
 
+	public function getCategoriesByEventId( $eventId ) {
+		$api = $this->api;
+
+		$sql = new DbQuery();
+		$sql->select('category.*');
+		$sql->from('category');
+		$sql->from('event');
+		$sql->from('event_category');
+
+		$sql->where('event_category.category_id = category.category_id');
+		$sql->where('event_category.event_id = event.event_id');
+		$sql->where('event.event_id = ' . pSQL($eventId));
+
+		$categories = Db::getInstance()->executeS($sql);
+
+		return $api->response([
+			'success' => true,
+			'categories' => $categories
+		]);
+	}
+
 	public function addCategory() {
 		$api = $this->api;
 		$payload = $api->request()->post(); 

@@ -134,4 +134,7 @@ INSERT INTO `event` (`name`, `date_start`, `date_end`, `date_add`)
 VALUES
 ('II Summit de Robótica Católica-SC', '2019-11-15 00:00:00', '2019-11-17 23:59:59', '2019-09-25 00:00:00');
 
+INSERT INTO `event_category` (`event_id`, `category_id`) VALUES
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7),
+(1, 8), (1, 9), (1, 10), (1, 11), (1, 12),  (1, 17);
 
