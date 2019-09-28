@@ -82,16 +82,16 @@ $requestPayload = $api->request->post();
 $api->group('/api', function () use ($api) {
 	$api->group('/v1', function () use ($api) {
 		/** Get all People */
-		// $api->get('/people?', '\RoboticEvent\v1\Person:getPeople')->name('get_people');
+		$api->get('/people?', '\RoboticEvent\v1\Person:getPeople')->name('get_people');
 		
 		// /** Get people by Team */
 		// $api->get('/people/:teamId:?', '\RoboticEvent\v1\Person:getPeople')->name('get_people');
 
 		// /** Get people by Event */
-		// $api->get('/people/:eventId:?', '\RoboticEvent\v1\Person:getPeople')->name('get_people');
+		$api->get('/people/:eventId:?', '\RoboticEvent\v1\Person:getPeopleByEventId')->name('get_people_by_event_id');
 
 		// /** Add a Person */
-		// $api->post('/people?', '\RoboticEvent\v1\Person:addPerson')->name('add_people');
+		$api->post('/people?', '\RoboticEvent\v1\Person:addPerson')->name('add_people');
 	
 		// /** Get a single Person */
 		// $api->get('/people/:personId?', '\RoboticEvent\v1\Person:getPerson')->name('get_person');

@@ -65,14 +65,14 @@ class Category extends Route {
 		if (!Validate::isCatalogName($name)) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Enter a valid category name'
+				'message' => 'Digite um nome válido para a categoria'
 			]);
 		}
 
 		if (!Validate::isCleanHtml($description)) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Enter a valid description of the category'
+				'message' => 'Digite uma descrição para a categoria'
 			]);
 		}
 
@@ -86,13 +86,13 @@ class Category extends Route {
 		if (!$ok) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Unable to create category'
+				'message' => 'Não foi possível criar a categoria'
 			]);
 		}
 
 		return $api->response([
 			'success' => true,
-			'message' => 'Category was created',
+			'message' => 'Categoria criada com sucesso',
 			'category' => [
 				'category_id' => $category->id,
 				'name' => $category->name,
@@ -101,4 +101,4 @@ class Category extends Route {
 		]);
 	}
 
-}	
+}
