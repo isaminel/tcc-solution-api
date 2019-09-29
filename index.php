@@ -115,7 +115,7 @@ $api->group('/api', function () use ($api) {
 		$api->get('/teams/:teamId?', '\RoboticEvent\v1\Team:getTeam')->name('get_team');
 
 		/** Update a single Team */
-		$api->patch('/teams/:teamId?', '\RoboticEvent\v1\Team:updateTeam')->name('update_team');
+		$api->put('/teams/:teamId?', '\RoboticEvent\v1\Team:updateTeam')->name('update_team');
 	
 		/** Delete a Team */
 		$api->delete('/teams/:teamId?', '\RoboticEvent\v1\Team:deleteTeam')->name('delete_team');

@@ -12,7 +12,7 @@ namespace RoboticEvent\v1;
 use Db;
 use RoboticEvent\Route;
 use RoboticEvent\Database\DbQuery;
-use RoboticEvent\Team\Team as TeamObject;
+use RoboticEvent\Entities\Team as TeamObject;
 use RoboticEvent\Util\ArrayUtils;
 use RoboticEvent\Validate;
 
@@ -39,41 +39,116 @@ class Team extends Route {
 		$api = $this->api;
 		$payload = $api->request()->post(); 
 
-		$name = ArrayUtils::get($payload, 'name');
-		$email = ArrayUtils::get($payload, 'email');
-		$website = ArrayUtils::get($payload, 'website');
-		$slogan = ArrayUtils::get($payload, 'slogan');
-		$institution = ArrayUtils::get($payload, 'institution');
-		$country = ArrayUtils::get($payload, 'country');
-		$state = ArrayUtils::get($payload, 'state');
-		$city = ArrayUtils::get($payload, 'city');
-		$image = ArrayUtils::get($payload, 'image');
-
-
-		if (!Validate::isGenericName($name)) {
-			return $api->response([
-				'success' => false,
-				'message' => 'Digite um nome válido'
-			]);
-		}
-
-		if (!Validate::isEmail($email)) {
-			return $api->response([
-				'success' => false,
-				'message' => 'Digite um email válido'
-			]);
-		}
-
 		$team = new TeamObject();
-		$team->name = $name;
-		$team->email = $email;
-		$team->website = $website;
-		$team->slogan = $slogan;
-		$team->institution = $institution;
-		$team->country = $country;
-		$team->state = $state;
-		$team->city = $city;
-		$team->image = $image;
+
+		if (ArrayUtils::has($payload, 'name')) {
+			$name = ArrayUtils::get($payload, 'name');
+			if ( !Validate::isGenericName($name) ) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Entre um nome válido para a equipe'
+				]);
+			}
+
+			$team->name = $name;
+		}
+
+		if (ArrayUtils::has($payload, 'email')) {
+			$email = ArrayUtils::get($payload, 'email');
+			if (!Validate::isEmail($email)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite um email válido'
+				]);
+			}
+
+			$team->email = $email;
+		}
+
+		if (ArrayUtils::has($payload, 'website')) {
+			$website = ArrayUtils::get($payload, 'website');
+			if (!Validate::isUrl($website)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite uma URL válida para o website'
+				]);
+			}
+
+			$team->website = $website;
+		}
+
+		if (ArrayUtils::has($payload, 'slogan')) {
+			$slogan = ArrayUtils::get($payload, 'slogan');
+			if(!Validate::isString($slogan)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite uma string válida para o slagan'
+				]);
+			}
+
+			$team->slogan = $slogan;
+		}
+
+		if (ArrayUtils::has($payload, 'institution')) {
+			$institution = ArrayUtils::get($payload, 'institution');
+			if ( !Validate::isGenericName($institution) ) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Entre um nome válido para a instituição'
+				]);
+			}
+
+			$team->institution = $institution;
+		}
+
+		if (ArrayUtils::has($payload, 'country')) {
+			$country = ArrayUtils::get($payload, 'country');
+			if ( !Validate::isGenericName($country) ) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Entre um nome válido para o país'
+				]);
+			}
+
+			$team->country = $country;
+		}
+
+		if (ArrayUtils::has($payload, 'state')) {
+			$state = ArrayUtils::get($payload, 'state');
+			if ( !Validate::isGenericName($state) ) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Entre um nome válido para o estado'
+				]);
+			}
+
+			$team->state = $state;
+		}
+
+		if (ArrayUtils::has($payload, 'city')) {
+			$city = ArrayUtils::get($payload, 'city');
+			if ( !Validate::isGenericName($city) ) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Entre um nome válido para a cidade'
+				]);
+			}
+
+			$team->city = $city;
+		}
+
+		if (ArrayUtils::has($payload, 'image')) {
+			$image = ArrayUtils::get($payload, 'image');
+			if ( !Validate::isString($institution) ) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Entre uma string válida para o caminho da imagem'
+				]);
+			}
+
+			$team->image = $image;
+		}
+
 		$team->date_add = date('Y-m-d H:m:s', time());
 
 		$ok = $team->save();
@@ -94,14 +169,12 @@ class Team extends Route {
 				'name' => $team->name,
 				'email' => $team->email,
 				'website' => $team->website,
-				'cpf' => $team->cpf,
-				'date_of_birth' => $team->date_of_birth,
-				'phone' => $team->phone,
-				'photo' => $team->photo,
-				'team' => [
-					'team_id' => $team->id,
-					'name' => $team->name,
-				],
+				'institution' => $team->institution,
+				'slogan' => $team->slogan,
+				'city' => $team->city,
+				'state' => $team->state,
+				'country' => $team->country,
+				'image' => $team->image,
 			]
 		]);
 	}
@@ -114,25 +187,26 @@ class Team extends Route {
 			$api->response->setStatus(404);
 			return $api->response([
 				'success' => false,
-				'message' => 'Team was not found'
+				'message' => 'Equipe encontrada'
 			]);
 		}
 		
-		$category = new CategoryObject( $team->category_id );
+		$team = new TeamObject( $team->id );
 
 		return $api->response([
 			'success' => true,
-			'message' => 'Team was Created',
+			'message' => 'Equipe encontrada',
 			'team' => [
 				'team_id' => $team->id,
 				'name' => $team->name,
-				'description' => $team->description,
-				'price' => (float) $team->price,
-				'category' => [
-					'category_id' => $category->id,
-					'name' => $category->name,
-					'description' => $category->description,
-				],
+				'email' => $team->email,
+				'website' => $team->website,
+				'institution' => $team->institution,
+				'slogan' => $team->slogan,
+				'city' => $team->city,
+				'state' => $team->state,
+				'country' => $team->country,
+				'image' => $team->image,
 			]
 		]);
 	}
@@ -146,7 +220,7 @@ class Team extends Route {
 			$api->response->setStatus(404);
 			return $api->response([
 				'success' => false,
-				'message' => 'Team was not found'
+				'message' => 'A equipe não foi encontrada'
 			]);
 		}
 
@@ -155,61 +229,108 @@ class Team extends Route {
 			if ( !Validate::isGenericName($name) ) {
 				return $api->response([
 					'success' => false,
-					'message' => 'Enter a valid team name'
+					'message' => 'Entre um nome válido para a equipe'
 				]);
 			}
 
 			$team->name = $name;
 		}
 
-		if (ArrayUtils::has($payload, 'description')) {
-			$description = ArrayUtils::get($payload, 'description');
-			if (!Validate::isCleanHtml($description)) {
+		if (ArrayUtils::has($payload, 'email')) {
+			$email = ArrayUtils::get($payload, 'email');
+			if (!Validate::isEmail($email)) {
 				return $api->response([
 					'success' => false,
-					'message' => 'Enter a valid description of the team'
+					'message' => 'Digite um email válido'
 				]);
 			}
 
-			$team->description = $description;
+			$team->email = $email;
 		}
 
-		if (ArrayUtils::has($payload, 'description')) {
-			$price = ArrayUtils::get($payload, 'price');
-			if (!Validate::isPrice($price)) {
+		if (ArrayUtils::has($payload, 'website')) {
+			$website = ArrayUtils::get($payload, 'website');
+			if (!Validate::isUrl($website)) {
 				return $api->response([
 					'success' => false,
-					'message' => 'Enter a valid price of the team'
+					'message' => 'Digite uma URL válida para o website'
 				]);
 			}
 
-			$team->price = $price;
+			$team->website = $website;
 		}
 
-		if (ArrayUtils::has($payload, 'category_id')) {
-			$category_id = ArrayUtils::get($payload, 'category_id');
-			if(!Validate::isInt($category_id)) {
+		if (ArrayUtils::has($payload, 'slogan')) {
+			$slogan = ArrayUtils::get($payload, 'slogan');
+			if(!Validate::isString($slogan)) {
 				return $api->response([
 					'success' => false,
-					'message' => 'Enter a valid category ID of the team'
+					'message' => 'Digite uma string válida para o slagan'
 				]);
 			}
 
-			$category = new CategoryObject( (int) $category_id );
-			if (!Validate::isLoadedObject($category)) {
-				return $api->response([
-					'success' => false,
-					'message' => 'The category ID (' . $category_id . ') does not exist'
-				]);
-			}
-
-			$team->category_id = $category->id;
+			$team->slogan = $slogan;
 		}
 
-		return $api->response([
-			'success' => false,
-			'message' => 'Unable to update team'
-		]);
+		if (ArrayUtils::has($payload, 'institution')) {
+			$institution = ArrayUtils::get($payload, 'institution');
+			if ( !Validate::isGenericName($institution) ) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Entre um nome válido para a instituição'
+				]);
+			}
+
+			$team->institution = $institution;
+		}
+
+		if (ArrayUtils::has($payload, 'country')) {
+			$country = ArrayUtils::get($payload, 'country');
+			if ( !Validate::isGenericName($country) ) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Entre um nome válido para o país'
+				]);
+			}
+
+			$team->country = $country;
+		}
+
+		if (ArrayUtils::has($payload, 'state')) {
+			$state = ArrayUtils::get($payload, 'state');
+			if ( !Validate::isGenericName($state) ) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Entre um nome válido para o estado'
+				]);
+			}
+
+			$team->state = $state;
+		}
+
+		if (ArrayUtils::has($payload, 'city')) {
+			$city = ArrayUtils::get($payload, 'city');
+			if ( !Validate::isGenericName($city) ) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Entre um nome válido para a cidade'
+				]);
+			}
+
+			$team->city = $city;
+		}
+
+		if (ArrayUtils::has($payload, 'image')) {
+			$image = ArrayUtils::get($payload, 'image');
+			if ( !Validate::isString($institution) ) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Entre uma string válida para o caminho da imagem'
+				]);
+			}
+
+			$team->image = $image;
+		}
 
 		$ok = $team->save();
 		// or team->update()
@@ -217,13 +338,13 @@ class Team extends Route {
 		if (!$ok) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Unable to update team'
+				'message' => 'Não foi possível atualizar a equipe'
 			]);
 		}
 
 		return $api->response([
 			'success' => true,
-			'message' => 'Team updated successfully'
+			'message' => 'Equipe atualizada com sucesso'
 		]);
 	}
 

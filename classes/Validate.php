@@ -72,6 +72,18 @@ class Validate
     }
 
     /**
+     * Check for website url validity.
+     * 
+     * @param string $url Url to validate
+     * 
+     * @return bool Validity is ok or not
+     */
+    public static function isUrl($url)
+    {
+        return preg_match(Tools::cleanNonUnicodeSupport('/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/'), stripslashes($url));
+    }
+
+    /**
      * Check for email validity.
      *
      * @param string $email Email to validate
