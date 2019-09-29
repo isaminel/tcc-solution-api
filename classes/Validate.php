@@ -108,6 +108,30 @@ class Validate
     }
 
     /**
+     * Check for cpf validity.
+     *
+     * @param string $cpf CPF to validate
+     *
+     * @return bool Validity is ok or not
+     */
+    public static function isCpf($cpf)
+    {
+        return preg_match('/^([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})$/', $cpf);
+    }
+
+    /**
+     * Check for RG validity.
+     *
+     * @param string $rg RG to validate
+     *
+     * @return bool Validity is ok or not
+     */
+    public static function isRg($rg)
+    {
+        return preg_match('/^([0-9]{1,2}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?)([0-9]{1,2})?$/', $rg);
+    }
+
+    /**
      * Check for price validity (including negative price).
      *
      * @param string $price Price to validate

@@ -19,6 +19,9 @@ class Person extends ObjectModel {
 
 	/** @var int $team_id */
 	public $team_id;
+
+	/** @var int $person_type_id */
+	public $person_type_id;
 	
 	/** @var string $name */
 	public $name;
@@ -36,7 +39,7 @@ class Person extends ObjectModel {
 	public $date_of_birth;
 
 	/** @var string $phone */
-	public $phone
+	public $phone;
 
 	/** @var string $photo */
     public $photo;
@@ -55,6 +58,7 @@ class Person extends ObjectModel {
         'primary' => 'person_id',
         'fields' => array(
 			'team_id' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 11),
+			'person_type_id' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 11),
 			'name' => array('type' => self::TYPE_STRING, 'required' => true, 'validate' => 'isString', 'size' => 255),
 			'email' => array('type' => self::TYPE_STRING, 'required' => true),
 			'rg' => array('type' => self::TYPE_STRING, 'required' => true),

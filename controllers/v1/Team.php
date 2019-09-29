@@ -322,7 +322,7 @@ class Team extends Route {
 
 		if (ArrayUtils::has($payload, 'image')) {
 			$image = ArrayUtils::get($payload, 'image');
-			if ( !Validate::isString($institution) ) {
+			if ( !Validate::isString($image) ) {
 				return $api->response([
 					'success' => false,
 					'message' => 'Entre uma string válida para o caminho da imagem'

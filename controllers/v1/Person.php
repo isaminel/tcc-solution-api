@@ -12,8 +12,8 @@ namespace RoboticEvent\v1;
 use Db;
 use RoboticEvent\Route;
 use RoboticEvent\Database\DbQuery;
-use RoboticEvent\Person\Person as PersonObject;
-use RoboticEvent\Person\Team as TeamObject;
+use RoboticEvent\Entities\Person as PersonObject;
+use RoboticEvent\Entities\Team as TeamObject;
 use RoboticEvent\Util\ArrayUtils;
 use RoboticEvent\Validate;
 
@@ -28,7 +28,7 @@ class Person extends Route {
 		$sql->select('person.*');
 		// Build FROM
 		$sql->from('person', 'person');
-		$persons = Db::getInstance()->executeS($sql);
+		$people = Db::getInstance()->executeS($sql);
 
 		return $api->response([
 			'success' => true,
@@ -78,36 +78,97 @@ class Person extends Route {
 		$api = $this->api;
 		$payload = $api->request()->post(); 
 
-		$name = ArrayUtils::get($payload, 'name');
+		
 		$team_id = ArrayUtils::get($payload, 'team_id');
-		$email = ArrayUtils::get($payload, 'email');
-		$rg = ArrayUtils::get($payload, 'rg');
-		$cpf = ArrayUtils::get($payload, 'cpf');
-		$date_of_birth = ArrayUtils::get($payload, 'date_of_birth');
-		$phone = ArrayUtils::get($payload, 'phone');
-		$photo = ArrayUtils::get($payload, 'photo');
-
 		$event_id = ArrayUtils::get($payload, 'event_id');
+		$person_type_id = ArrayUtils::get($payload, 'person_type_id');
 
-		if (!Validate::isGenericName($name)) {
-			return $api->response([
-				'success' => false,
-				'message' => 'Digite um nome válido'
-			]);
+		$person = new PersonObject();
+
+		if (ArrayUtils::has($payload, 'name')) {
+			$name = ArrayUtils::get($payload, 'name');
+			if (!Validate::isGenericName($name)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite um nome válido'
+				]);
+			}
+
+			$person->name = $name;
 		}
 
-		if (!Validate::isEmail($email)) {
-			return $api->response([
-				'success' => false,
-				'message' => 'Digite um email válido'
-			]);
+		if (ArrayUtils::has($payload, 'email')) {
+			$email = ArrayUtils::get($payload, 'email');
+			if (!Validate::isEmail($email)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite um email válido'
+				]);
+			}
+
+			$person->email = $email;
+		}
+		
+		if (ArrayUtils::has($payload, 'cpf')) {
+			$cpf = ArrayUtils::get($payload, 'cpf');
+			if (!Validate::isCpf($cpf)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite um cpf válido'
+				]);
+			}
+
+			$person->cpf = $cpf;
 		}
 
-		if (!Validate::isDate($date_of_birth)) {
-			return $api->response([
-				'success' => false,
-				'message' => 'Digite uma data de nascimento válida'
-			]);
+		if (ArrayUtils::has($payload, 'rg')) {
+			$rg = ArrayUtils::get($payload, 'rg');
+			if (!Validate::isRg($rg)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite um rg válido'
+				]);
+			}
+
+			$person->rg = $rg;
+		}
+
+		if (ArrayUtils::has($payload, 'rg')) {
+			$date_of_birth = ArrayUtils::get($payload, 'date_of_birth');
+			if (!Validate::isDate($date_of_birth)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite uma data de nascimento válida'
+				]);
+			}
+
+			$person->date_of_birth = $date_of_birth;
+		}
+
+		if (ArrayUtils::has($payload, 'phone')) {
+			$phone = ArrayUtils::get($payload, 'phone');
+
+			if (!Validate::isString($phone)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite uma string válida para o telefone'
+				]);
+			}
+
+			$person->phone = $phone;
+		}
+
+		if (ArrayUtils::has($payload, 'photo')) {
+			$phone = ArrayUtils::get($payload, 'photo');
+
+			if (!Validate::isString($photo)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite uma string válida para o caminho da foto'
+				]);
+			}
+
+			$person->photo = $photo;
 		}
 
 		if(!Validate::isInt($team_id)) {
@@ -125,16 +186,9 @@ class Person extends Route {
 			]);
 		}
 
-		$person = new PersonObject();
-		$person->name = $name;
-		$person->email = $email;
-		$person->rg = $rg;
-		$person->cpf = $cpf;
-		$person->date_of_birth = $date_of_birth;
-		$person->phone = $phone;
-		$person->photo = $photo;
 		$person->date_add = date('Y-m-d H:m:s', time());
 		$person->team_id = $team->id;
+		$person->person_type_id = $person_type_id;
 
 		$ok = $person->save();
 		// or $person->add();
@@ -163,6 +217,7 @@ class Person extends Route {
 			'message' => 'Pessoa criada',
 			'person' => [
 				'person_id' => $person->id,
+				'person_type_id' => $person->person_type_id,
 				'name' => $person->id,
 				'email' => $person->email,
 				'rg' => $person->rg,
