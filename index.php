@@ -93,10 +93,10 @@ $api->group('/api', function () use ($api) {
 		$api->post('/people?', '\RoboticEvent\v1\Person:addPerson')->name('add_people');
 	
 		// /** Get a single Person */
-		// $api->get('/people/:personId?', '\RoboticEvent\v1\Person:getPerson')->name('get_person');
+		$api->get('/people/:personId?', '\RoboticEvent\v1\Person:getPerson')->name('get_person');
 
 		// /** Update a single Person */
-		// $api->patch('/people/:personId?', '\RoboticEvent\v1\Person:updatePerson')->name('update_person');
+		$api->patch('/people/:personId?', '\RoboticEvent\v1\Person:updatePerson')->name('update_person');
 	
 		// /** Delete a Person */
 		// $api->delete('/people/:personId?', '\RoboticEvent\v1\Person:deletePerson')->name('delete_person');
@@ -146,10 +146,10 @@ $api->group('/api', function () use ($api) {
 		// $api->get('/robots/search?', '\RoboticEvent\v1\Robot:searchRobots')->name('search_robots');
 
 		// /** Get all Events */
-		// $api->get('/events?', '\RoboticEvent\v1\Event:getEvents')->name('get_events');
+		$api->get('/events?', '\RoboticEvent\v1\Event:getEvents')->name('get_events');
 		
 		// /** Add a Event */
-		// $api->post('/events?', '\RoboticEvent\v1\Event:addEvent')->name('add_events');
+		$api->post('/events?', '\RoboticEvent\v1\Event:addEvent')->name('add_events');
 	
 		// /** Get a single Event */
 		// $api->get('/events/:eventId?', '\RoboticEvent\v1\Event:getEvent')->name('get_event');

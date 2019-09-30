@@ -12,8 +12,7 @@ namespace RoboticEvent\v1;
 use Db;
 use RoboticEvent\Route;
 use RoboticEvent\Database\DbQuery;
-use RoboticEvent\Event\Event as EventObject;
-use RoboticEvent\Event\Category as CategoryObject;
+use RoboticEvent\Entities\Event as EventObject;
 use RoboticEvent\Util\ArrayUtils;
 use RoboticEvent\Validate;
 
@@ -40,52 +39,118 @@ class Event extends Route {
 		$api = $this->api;
 		$payload = $api->request()->post(); 
 
-		$name = ArrayUtils::get($payload, 'name');
-		$description = ArrayUtils::get($payload, 'description');
-		$price = ArrayUtils::get($payload, 'price');
-		$category_id = ArrayUtils::get($payload, 'category_id');
-
-		if (!Validate::isGenericName($name)) {
-			return $api->response([
-				'success' => false,
-				'message' => 'Enter a valid event name'
-			]);
-		}
-
-		if (!Validate::isCleanHtml($description)) {
-			return $api->response([
-				'success' => false,
-				'message' => 'Enter a valid description of the event'
-			]);
-		}
-
-		if (!Validate::isPrice($price)) {
-			return $api->response([
-				'success' => false,
-				'message' => 'Enter a valid price of the event'
-			]);
-		}
-
-		if(!Validate::isInt($category_id)) {
-			return $api->response([
-				'success' => false,
-				'message' => 'Enter a valid category ID of the event'
-			]);
-		}
-
-		$category = new CategoryObject( (int) $category_id );
-		if (!Validate::isLoadedObject($category)) {
-			return $api->response([
-				'success' => false,
-				'message' => 'The category ID (' . $category_id . ') does not exist'
-			]);
-		}
-
 		$event = new EventObject();
-		$event->name = $name;
-		$event->description = $description;
-		$event->price = (float) $price;
-		$event->category_id = $category->id;
+
+		if (ArrayUtils::has($payload, 'name')) {
+			$name = ArrayUtils::get($payload, 'name');
+			if (!Validate::isGenericName($name)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite um nome válido'
+				]);
+			}
+			$event->name = $name;
+		}
+
+		if (ArrayUtils::has($payload, 'address')) {
+			$address = ArrayUtils::get($payload, 'address');
+			if (!Validate::isString($address)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite um endereço válido'
+				]);
+			}
+			$event->address = $address;
+		}
+
+		if (ArrayUtils::has($payload, 'city')) {
+			$city = ArrayUtils::get($payload, 'city');
+			if (!Validate::isGenericName($city)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite uma cidade válida'
+				]);
+			}
+			$event->city = $city;
+		}
+
+		if (ArrayUtils::has($payload, 'city')) {
+			$state = ArrayUtils::get($payload, 'state');
+			if (!Validate::isGenericName($state)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite um estado válido'
+				]);
+			}
+			$event->state = $state;
+		}
+
+		if (ArrayUtils::has($payload, 'country')) {
+			$country = ArrayUtils::get($payload, 'country');
+			if (!Validate::isGenericName($country)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite um país válido'
+				]);
+			}
+			$event->country = $country;
+		}
+
+		if (ArrayUtils::has($payload, 'website')) {
+			$website = ArrayUtils::get($payload, 'website');
+			if (!Validate::isUrl($website)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite uma url válida'
+				]);
+			}
+			$event->website = $website;
+		}
+
+		if (ArrayUtils::has($payload, 'email')) {
+			$email = ArrayUtils::get($payload, 'email');
+			if (!Validate::isEmail($email)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite um email válido'
+				]);
+			}
+			$event->email = $email;
+		}
+
+		if (ArrayUtils::has($payload, 'image')) {
+			$image = ArrayUtils::get($payload, 'image');
+			if (!Validate::isEmail($image)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite um caminho válido para imagem'
+				]);
+			}
+			$event->image = $image;
+		}
+
+		if (ArrayUtils::has($payload, 'date_start')) {
+			$date_start = ArrayUtils::get($payload, 'date_start');
+			if (!Validate::isDate($date_start)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite uma data inicial válida'
+				]);
+			}
+			$event->date_start = $date_start;
+		}
+
+		if (ArrayUtils::has($payload, 'date_end')) {
+			$date_end = ArrayUtils::get($payload, 'date_end');
+			if (!Validate::isDate($date_end)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite uma data final válida'
+				]);
+			}
+			$event->date_end = $date_end;
+		}
+
 
 		$ok = $event->save();
 		// or $event->add();
@@ -93,23 +158,27 @@ class Event extends Route {
 		if (!$ok) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Unable to create event'
+				'message' => 'Não foi possível criar o evento'
 			]);
 		}
 
 		return $api->response([
 			'success' => true,
-			'message' => 'Event was Created',
+			'message' => 'Evento criado',
 			'event' => [
 				'event_id' => $event->id,
-				'name' => $event->id,
-				'description' => $event->description,
-				'price' => (float) $event->price,
-				'category' => [
-					'category_id' => $category->id,
-					'name' => $category->name,
-					'description' => $category->description,
-				],
+				'name' => $event->name,
+				'address' => $event->address,
+				'city' => $event->city,
+				'state' => $event->state,
+				'country' => $event->country,
+				'website' > $event->website,
+				'email' => $event->email,
+				'image' => $event->image,
+				'date_start' => $event->date_start,
+				'date_end' => $event->date_end,
+				'date_upd' => $event->date_upd,
+				'date_add' => $event->date_add,
 			]
 		]);
 	}

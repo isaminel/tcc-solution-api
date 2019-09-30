@@ -79,11 +79,11 @@ class Person extends Route {
 		$payload = $api->request()->post(); 
 
 		
-		$team_id = ArrayUtils::get($payload, 'team_id');
 		$event_id = ArrayUtils::get($payload, 'event_id');
 		$person_type_id = ArrayUtils::get($payload, 'person_type_id');
 
 		$person = new PersonObject();
+		$person->team_id = null;
 
 		if (ArrayUtils::has($payload, 'name')) {
 			$name = ArrayUtils::get($payload, 'name');
@@ -171,23 +171,34 @@ class Person extends Route {
 			$person->photo = $photo;
 		}
 
-		if(!Validate::isInt($team_id)) {
-			return $api->response([
-				'success' => false,
-				'message' => 'Insira uma equipe válida para a pessoa'
-			]);
+		$team = null;
+		$team_arr = array();
+
+		if (ArrayUtils::has($payload, 'team_id')) {
+			$team_id = ArrayUtils::get($payload, 'team_id');
+			if(!Validate::isInt($team_id)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Insira uma equipe válida para a pessoa'
+				]);
+			}
+
+			$team = new TeamObject( (int) $team_id );
+			if (!Validate::isLoadedObject($team)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'O ID de equipe (' . $team_id . ') não existe.'
+				]);
+			}
+			
+			$person->team_id = $team->id;
+
+			$team_arr =	[
+					'team_id' => $person->team_id,
+					'name' => $team->name,
+			];
 		}
 
-		$team = new TeamObject( (int) $team_id );
-		if (!Validate::isLoadedObject($team)) {
-			return $api->response([
-				'success' => false,
-				'message' => 'O ID de equipe (' . $team_id . ') não existe.'
-			]);
-		}
-
-		$person->date_add = date('Y-m-d H:m:s', time());
-		$person->team_id = $team->id;
 		$person->person_type_id = $person_type_id;
 
 		$ok = $person->save();
@@ -225,10 +236,7 @@ class Person extends Route {
 				'date_of_birth' => $person->date_of_birth,
 				'phone' => $person->phone,
 				'photo' => $person->photo,
-				'team' => [
-					'team_id' => $team->id,
-					'name' => $team->name,
-				],
+				'team' => $team_arr,
 			]
 		]);
 	}
@@ -241,25 +249,33 @@ class Person extends Route {
 			$api->response->setStatus(404);
 			return $api->response([
 				'success' => false,
-				'message' => 'Person was not found'
+				'message' => 'Pessoa não encontrada'
 			]);
 		}
 		
-		$category = new CategoryObject( $person->category_id );
+		$team = new TeamObject( $person->team_id );
+		$team_arr = array();
+		if (Validate::isLoadedObject($team)) {
+			$team_arr =	[
+				'team_id' => $team->id,
+				'name' => $team->name,
+			];
+		}
 
 		return $api->response([
 			'success' => true,
-			'message' => 'Person was Created',
+			'message' => 'Pessoa criada',
 			'person' => [
 				'person_id' => $person->id,
-				'name' => $person->name,
-				'description' => $person->description,
-				'price' => (float) $person->price,
-				'category' => [
-					'category_id' => $category->id,
-					'name' => $category->name,
-					'description' => $category->description,
-				],
+				'person_type_id' => $person->person_type_id,
+				'name' => $person->id,
+				'email' => $person->email,
+				'rg' => $person->rg,
+				'cpf' => $person->cpf,
+				'date_of_birth' => $person->date_of_birth,
+				'phone' => $person->phone,
+				'photo' => $person->photo,
+				'team' => $team_arr,
 			]
 		]);
 	}
@@ -273,70 +289,117 @@ class Person extends Route {
 			$api->response->setStatus(404);
 			return $api->response([
 				'success' => false,
-				'message' => 'Person was not found'
+				'message' => 'Pessoa não encontrada'
 			]);
 		}
 
 		if (ArrayUtils::has($payload, 'name')) {
 			$name = ArrayUtils::get($payload, 'name');
-			if ( !Validate::isGenericName($name) ) {
+			if (!Validate::isGenericName($name)) {
 				return $api->response([
 					'success' => false,
-					'message' => 'Enter a valid person name'
+					'message' => 'Digite um nome válido'
 				]);
 			}
 
 			$person->name = $name;
 		}
 
-		if (ArrayUtils::has($payload, 'description')) {
-			$description = ArrayUtils::get($payload, 'description');
-			if (!Validate::isCleanHtml($description)) {
+		if (ArrayUtils::has($payload, 'email')) {
+			$email = ArrayUtils::get($payload, 'email');
+			if (!Validate::isEmail($email)) {
 				return $api->response([
 					'success' => false,
-					'message' => 'Enter a valid description of the person'
+					'message' => 'Digite um email válido'
 				]);
 			}
 
-			$person->description = $description;
+			$person->email = $email;
+		}
+		
+		if (ArrayUtils::has($payload, 'cpf')) {
+			$cpf = ArrayUtils::get($payload, 'cpf');
+			if (!Validate::isCpf($cpf)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite um cpf válido'
+				]);
+			}
+
+			$person->cpf = $cpf;
 		}
 
-		if (ArrayUtils::has($payload, 'description')) {
-			$price = ArrayUtils::get($payload, 'price');
-			if (!Validate::isPrice($price)) {
+		if (ArrayUtils::has($payload, 'rg')) {
+			$rg = ArrayUtils::get($payload, 'rg');
+			if (!Validate::isRg($rg)) {
 				return $api->response([
 					'success' => false,
-					'message' => 'Enter a valid price of the person'
+					'message' => 'Digite um rg válido'
 				]);
 			}
 
-			$person->price = $price;
+			$person->rg = $rg;
 		}
 
-		if (ArrayUtils::has($payload, 'category_id')) {
-			$category_id = ArrayUtils::get($payload, 'category_id');
-			if(!Validate::isInt($category_id)) {
+		if (ArrayUtils::has($payload, 'rg')) {
+			$date_of_birth = ArrayUtils::get($payload, 'date_of_birth');
+			if (!Validate::isDate($date_of_birth)) {
 				return $api->response([
 					'success' => false,
-					'message' => 'Enter a valid category ID of the person'
+					'message' => 'Digite uma data de nascimento válida'
 				]);
 			}
 
-			$category = new CategoryObject( (int) $category_id );
-			if (!Validate::isLoadedObject($category)) {
-				return $api->response([
-					'success' => false,
-					'message' => 'The category ID (' . $category_id . ') does not exist'
-				]);
-			}
-
-			$person->category_id = $category->id;
+			$person->date_of_birth = $date_of_birth;
 		}
 
-		return $api->response([
-			'success' => false,
-			'message' => 'Unable to update person'
-		]);
+		if (ArrayUtils::has($payload, 'phone')) {
+			$phone = ArrayUtils::get($payload, 'phone');
+
+			if (!Validate::isString($phone)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite uma string válida para o telefone'
+				]);
+			}
+
+			$person->phone = $phone;
+		}
+
+		if (ArrayUtils::has($payload, 'photo')) {
+			$phone = ArrayUtils::get($payload, 'photo');
+
+			if (!Validate::isString($photo)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Digite uma string válida para o caminho da foto'
+				]);
+			}
+
+			$person->photo = $photo;
+		}
+
+		if (ArrayUtils::has($payload, 'team_id')) {
+			$team_id = ArrayUtils::get($payload, 'team_id');
+			if(!Validate::isInt($team_id)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'Insira uma equipe válida para a pessoa'
+				]);
+			}
+
+			$team = new TeamObject( (int) $team_id );
+			if (!Validate::isLoadedObject($team)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'O ID de equipe (' . $team_id . ') não existe.'
+				]);
+			}
+			
+			$person->team_id = $team->id;
+		}
+
+		$person->person_type_id = $person_type_id;
 
 		$ok = $person->save();
 		// or person->update()
@@ -344,13 +407,13 @@ class Person extends Route {
 		if (!$ok) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Unable to update person'
+				'message' => 'Não foi possível atualizar a Pessoa'
 			]);
 		}
 
 		return $api->response([
 			'success' => true,
-			'message' => 'Person updated successfully'
+			'message' => 'Pessoa atualizada com sucesso'
 		]);
 	}
 

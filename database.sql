@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `person` (
   `date_upd` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_add` DATETIME NOT NULL,
   `photo` VARCHAR(255),
-  `team_id` INT(11),
+  `team_id` INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (`person_id`),
   FOREIGN KEY (`team_id`) REFERENCES `team`(`team_id`),
   FOREIGN KEY (`person_type_id`) REFERENCES `person_type`(`person_type_id`)
