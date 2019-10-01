@@ -89,6 +89,9 @@ $api->group('/api', function () use ($api) {
 		/** Get people by Event */
 		$api->get('/people/event/:eventId:?', '\RoboticEvent\v1\Person:getPeopleByEventId')->name('get_people_by_event_id');
 
+		/** Get person by Email */
+		$api->get('/people/email?', '\RoboticEvent\v1\Person:getPersonByEmail')->name('get_people_by_email');
+
 		/** Add a Person */
 		$api->post('/people?', '\RoboticEvent\v1\Person:addPerson')->name('add_people');
 	

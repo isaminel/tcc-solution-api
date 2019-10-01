@@ -52,7 +52,26 @@ class Person extends Route {
 			'people' => $people
 		]);
 	}	
-	
+
+	public function getPersonByEmail() {
+		$api = $this->api;
+		$payload = $api->request()->get(); 
+		$email = ArrayUtils::get($payload, 'email');
+
+		$sql = new DbQuery();
+		$sql->select('person.*');
+		$sql->from('person');
+
+		$sql->where('email = "' . pSQL($email) . '"');
+
+		$people = Db::getInstance()->executeS($sql);
+
+		return $api->response([
+			'success' => true,
+			'person' => $people,
+		]);
+	}	
+
 	public function getPeopleByEventId( $eventId ) {
 		$api = $this->api;
 
