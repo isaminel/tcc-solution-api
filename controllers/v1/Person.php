@@ -216,11 +216,13 @@ class Person extends Route {
 					'team_id' => $person->team_id,
 					'name' => $team->name,
 			];
+		} else {
+			$person->team_id = null;
 		}
 
 		$person->person_type_id = $person_type_id;
 
-		$ok = $person->save();
+		$ok = $person->save(true);
 		// or $person->add();
 
 		if (!$ok) {
@@ -397,6 +399,19 @@ class Person extends Route {
 
 			$person->photo = $photo;
 		}
+		
+		if (ArrayUtils::has($payload, 'person_type_id')) {
+			$phone = ArrayUtils::get($payload, 'person_type_id');
+
+			if (!Validate::isInt($person_type_id)) {
+				return $api->response([
+					'success' => false,
+					'message' => 'O tipo de pessoa deve ser um inteiro'
+				]);
+			}
+
+			$person->person_type_id = $person_type_id;
+		}
 
 		if (ArrayUtils::has($payload, 'team_id')) {
 			$team_id = ArrayUtils::get($payload, 'team_id');
@@ -418,9 +433,8 @@ class Person extends Route {
 			$person->team_id = $team->id;
 		}
 
-		$person->person_type_id = $person_type_id;
 
-		$ok = $person->save();
+		$ok = $person->save(true);
 		// or person->update()
 		
 		if (!$ok) {
@@ -432,7 +446,8 @@ class Person extends Route {
 
 		return $api->response([
 			'success' => true,
-			'message' => 'Pessoa atualizada com sucesso'
+			'message' => 'Pessoa atualizada com sucesso',
+			'team_id' => $person->team_id
 		]);
 	}
 

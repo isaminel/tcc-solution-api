@@ -57,7 +57,7 @@ class Person extends ObjectModel {
         'table' => 'person',
         'primary' => 'person_id',
         'fields' => array(
-//			'team_id' => array('type' => self::TYPE_INT, 'required' => false, 'validate' => 'isInt', 'size' => 11),
+			'team_id' => array('type' => self::TYPE_INT, 'required' => false, 'validate' => 'isInt', 'size' => 11, 'allow_null' => true),
 			'person_type_id' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 11),
 			'name' => array('type' => self::TYPE_STRING, 'required' => true, 'validate' => 'isString', 'size' => 255),
 			'email' => array('type' => self::TYPE_STRING, 'required' => true),
