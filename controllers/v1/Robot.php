@@ -178,7 +178,7 @@ class Robot extends Route {
 			'message' => 'Robô criado',
 			'robot' => [
 				'robot_id' => $robot->id,
-				'name' => $robot->id,
+				'name' => $robot->name,
 				'photo' => $robot->photo,
                 'team' => $team_arr,
                 'category' => [
