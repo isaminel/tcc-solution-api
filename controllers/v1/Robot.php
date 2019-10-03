@@ -208,22 +208,28 @@ class Robot extends Route {
 				'team_id' => $team->id,
 				'name' => $team->name,
 			];
-		}
+        }
+        
+        $category = new CategoryObject( (int) $robot->category_id );
+        if (!Validate::isLoadedObject($category)) {
+            return $api->response([
+                'success' => false,
+                'message' => 'O ID de categoria (' . $category_id . ') não existe.'
+            ]);
+        }
 
 		return $api->response([
 			'success' => true,
-			'message' => 'Pessoa criada',
+			'message' => 'Robô criado',
 			'robot' => [
 				'robot_id' => $robot->id,
-				'robot_type_id' => $robot->robot_type_id,
-				'name' => $robot->id,
-				'email' => $robot->email,
-				'rg' => $robot->rg,
-				'cpf' => $robot->cpf,
-				'date_of_birth' => $robot->date_of_birth,
-				'phone' => $robot->phone,
+				'name' => $robot->name,
 				'photo' => $robot->photo,
-				'team' => $team_arr,
+                'team' => $team_arr,
+                'category' => [
+                    'category_id' => $robot->category_id,
+                    'name' => $category->name
+                ]
 			]
 		]);
 	}
