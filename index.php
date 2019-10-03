@@ -128,19 +128,19 @@ $api->group('/api', function () use ($api) {
 
 
 		// /** Get all Robots */
-		// $api->get('/robots?', '\RoboticEvent\v1\Robot:getRobots')->name('get_robots');
+		$api->get('/robots?', '\RoboticEvent\v1\Robot:getRobots')->name('get_robots');
 		
 		// /** Get Robots by Team */
-		// $api->get('/robots/:teamId:?', '\RoboticEvent\v1\Robot:getRobots')->name('get_robots');
+		$api->get('/robots/:teamId:?', '\RoboticEvent\v1\Robot:getRobots')->name('get_robots');
 
 		// /** Add a Robot */
-		// $api->post('/robots?', '\RoboticEvent\v1\Robot:addRobot')->name('add_robots');
+		$api->post('/robots?', '\RoboticEvent\v1\Robot:addRobot')->name('add_robots');
 	
 		// /** Get a single Robot */
-		// $api->get('/robots/:robotId?', '\RoboticEvent\v1\Robot:getRobot')->name('get_robot');
+		$api->get('/robots/:robotId?', '\RoboticEvent\v1\Robot:getRobot')->name('get_robot');
 
 		// /** Update a single Robot */
-		// $api->patch('/robots/:robotId?', '\RoboticEvent\v1\Robot:updateRobot')->name('update_robot');
+		$api->patch('/robots/:robotId?', '\RoboticEvent\v1\Robot:updateRobot')->name('update_robot');
 	
 		// /** Delete a Robot */
 		// $api->delete('/robots/:robotId?', '\RoboticEvent\v1\Robot:deletePerson')->name('delete_person');
