@@ -22,13 +22,39 @@ class Person extends Route {
 	public function getPeople() {
 		$api = $this->api;
 
+		$payload = $api->request()->get(); 
+
+
 		// Build query
 		$sql = new DbQuery();
 		// Build SELECT
 		$sql->select('person.*');
 		// Build FROM
 		$sql->from('person', 'person');
+
+		if (ArrayUtils::has($payload, 'event_id')) {
+			$event_id = ArrayUtils::get($payload, 'event_id');
+			$sql->from('event');
+			$sql->from('event_person');
+
+			$sql->where('event_person.person_id = person.person_id');
+			$sql->where('event_person.event_id = event.event_id');
+			$sql->where('event.event_id = ' . pSQL($event_id));
+		}
+
+		if (ArrayUtils::has($payload, 'name')) {
+			$name = ArrayUtils::get($payload, 'name');
+			$sql->where('name LIKE "%' . pSQL($name) . '%"');
+		}
+
+		if (ArrayUtils::has($payload, 'team_id')) {
+			$team_id = ArrayUtils::get($payload, 'team_id');
+			$sql->where('team_id = ' . pSQL($team_id));
+		}
+
+
 		$people = Db::getInstance()->executeS($sql);
+
 
 		return $api->response([
 			'success' => true,
