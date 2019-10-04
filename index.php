@@ -169,6 +169,9 @@ $api->group('/api', function () use ($api) {
 		// /** search Events */
 		// $api->get('/events/search?', '\RoboticEvent\v1\Event:searchEvents')->name('search_events');
 
+		/** Asaas */
+		$api->put('/asaas/client/:personId?', '\RoboticEvent\v1\Asaas:addClient')->name('add_client');
+
 
 		/** Grouping Category Endpoints */
 		$api->group('/categories', function () use ($api) {
