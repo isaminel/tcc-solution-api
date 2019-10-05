@@ -276,7 +276,7 @@ class Person extends Route {
 			'person' => [
 				'person_id' => $person->id,
 				'person_type_id' => $person->person_type_id,
-				'name' => $person->id,
+				'name' => $person->name,
 				'email' => $person->email,
 				'rg' => $person->rg,
 				'cpf' => $person->cpf,
@@ -473,7 +473,6 @@ class Person extends Route {
 		return $api->response([
 			'success' => true,
 			'message' => 'Pessoa atualizada com sucesso',
-			'team_id' => $person->team_id
 		]);
 	}
 
