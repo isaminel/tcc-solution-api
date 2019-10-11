@@ -7,7 +7,7 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent\v1;
+/*namespace RoboticEvent\v1;
 
 use Db;
 use RoboticEvent\Route;
@@ -547,6 +547,6 @@ class Person extends Route {
 			'persons' => $persons
 		]);
 	}
-}
+}*/
 
 

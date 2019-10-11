@@ -1,23 +1,23 @@
 <?php
 /**
  * @package    PHP Advanced API Guide
- * @author     Davison Pro <davisonpro.coder@gmail.com>
- * @copyright  2019 DavisonPro
+ * @author     Isabelle Minel <isabelleminel@gmail.com>
+ * @copyright  2019 TCCSolution
  * @version    1.0.0
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent\v1;
+namespace TCCSolution\v1;
 
 use Db;
-use RoboticEvent\Route;
-use RoboticEvent\Database\DbQuery;
-use RoboticEvent\Product\Category as CategoryObject;
-use RoboticEvent\Util\ArrayUtils;
-use RoboticEvent\Validate;
+use TCCSolution\Route;
+use TCCSolution\Database\DbQuery;
+use TCCSolution\Entities\Category as CategoryObject;
+use TCCSolution\Util\ArrayUtils;
+use TCCSolution\Validate;
 
 class Category extends Route {
-	public function getCategories() {
+	public function getCategory() {
 		$api = $this->api;
 
 		// Build query
@@ -26,32 +26,11 @@ class Category extends Route {
 		$sql->select('category.*');
 		// Build FROM
 		$sql->from('category', 'category');
-		$categories = Db::getInstance()->executeS($sql);
+		$category = Db::getInstance()->executeS($sql);
 
 		return $api->response([
 			'success' => true,
-			'categories' => $categories
-		]);
-	}
-
-	public function getCategoriesByEventId( $eventId ) {
-		$api = $this->api;
-
-		$sql = new DbQuery();
-		$sql->select('category.*');
-		$sql->from('category');
-		$sql->from('event');
-		$sql->from('event_category');
-
-		$sql->where('event_category.category_id = category.category_id');
-		$sql->where('event_category.event_id = event.event_id');
-		$sql->where('event.event_id = ' . pSQL($eventId));
-
-		$categories = Db::getInstance()->executeS($sql);
-
-		return $api->response([
-			'success' => true,
-			'categories' => $categories
+			'category' => $category
 		]);
 	}
 
@@ -60,25 +39,16 @@ class Category extends Route {
 		$payload = $api->request()->post(); 
 
 		$name = ArrayUtils::get($payload, 'name');
-		$description = ArrayUtils::get($payload, 'description');
 
-		if (!Validate::isCatalogName($name)) {
+		if (!Validate::isName($name)) {
 			return $api->response([
 				'success' => false,
 				'message' => 'Digite um nome válido para a categoria'
 			]);
 		}
 
-		if (!Validate::isCleanHtml($description)) {
-			return $api->response([
-				'success' => false,
-				'message' => 'Digite uma descrição para a categoria'
-			]);
-		}
-
 		$category = new CategoryObject();
 		$category->name = $name;
-		$category->description = $description;
 
 		$ok = $category->save();
 		// or $category->add();
@@ -94,9 +64,8 @@ class Category extends Route {
 			'success' => true,
 			'message' => 'Categoria criada com sucesso',
 			'category' => [
-				'category_id' => $category->id,
+				'id' => $category->id,
 				'name' => $category->name,
-				'description' => $category->description,
 			]
 		]);
 	}

@@ -13,12 +13,15 @@ use Db;
 use TCCSolution\Database\DbQuery;
 use TCCSolution\ObjectModel;
 
-class Category extends ObjectModel {
-	/** @var $id Category ID */
+class Following extends ObjectModel {
+	/** @var $id Following ID */
 	public $id;
 
-	/** @var string $name */
-	public $name;
+	/** @var int $users_id */
+	public $users_id;
+
+	/** @var int $ideas_id */
+	public $ideas_id;
 	
 	/** @var $date_add */
     public $date_add;
@@ -30,10 +33,11 @@ class Category extends ObjectModel {
      * @see ObjectModel::$definition
      */
     public static $definition = array(
-        'table' => 'category',
+        'table' => 'following',
         'primary' => 'id',
         'fields' => array(
-			'name' => array('type' => self::TYPE_STRING, 'required' => true),
+			'users_id' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 11),
+			'ideas_id' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 11),
 			'date_add' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
 			'date_upd' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
         )

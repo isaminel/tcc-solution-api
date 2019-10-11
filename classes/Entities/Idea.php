@@ -13,12 +13,21 @@ use Db;
 use TCCSolution\Database\DbQuery;
 use TCCSolution\ObjectModel;
 
-class Category extends ObjectModel {
-	/** @var $id Category ID */
+class Idea extends ObjectModel {
+	/** @var $id Idea ID */
 	public $id;
 
-	/** @var string $name */
-	public $name;
+	/** @var string $title */
+	public $title;
+
+	/** @var string $description */
+    public $description;
+    
+    /** @var string $category_id */
+    public $category_id;
+    
+    /** @var string $user_id */
+	public $user_id;
 	
 	/** @var $date_add */
     public $date_add;
@@ -30,10 +39,13 @@ class Category extends ObjectModel {
      * @see ObjectModel::$definition
      */
     public static $definition = array(
-        'table' => 'category',
+        'table' => 'idea',
         'primary' => 'id',
         'fields' => array(
-			'name' => array('type' => self::TYPE_STRING, 'required' => true),
+            'title' => array('type' => self::TYPE_STRING, 'required' => true, 'validate' => 'isString', 'size' => 255),
+            'description' => array('type' => self::TYPE_STRING, 'required' => true),
+            'category_id' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 11),
+            'user_id' => array('type' => self::TYPE_INT, 'validate' => 'isInt', 'size' => 11),
 			'date_add' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
 			'date_upd' => array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
         )
