@@ -1,8 +1,8 @@
 <?php
 /**
  * @package    TCCSolution
- * @author     Davison Pro <davisonpro.coder@gmail.com>
- * @copyright  2018 TCCSolution
+ * @author     Isabelle Minel <isabelleminel@gmail.com>
+ * @copyright  2019 TCCSolution
  * @version    1.0.0
  * @since      File available since Release 1.0.0
  */
