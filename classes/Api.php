@@ -7,14 +7,14 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent;
+namespace TCCSolution;
 
 use Slim\Http\Util;
 use Slim\Slim;
-use RoboticEvent\Util\ArrayUtils;
-use RoboticEvent\Slim\BaseResponse;
-use RoboticEvent\Slim\BaseRequest;
-use RoboticEvent\Slim\Environment;
+use TCCSolution\Util\ArrayUtils;
+use TCCSolution\Slim\BaseResponse;
+use TCCSolution\Slim\BaseRequest;
+use TCCSolution\Slim\Environment;
 
 /**
  * Api

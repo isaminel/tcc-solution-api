@@ -1,13 +1,13 @@
 <?php 
 /**
- * @package    RoboticEvent
+ * @package    TCCSolution
  * @author     Davison Pro <davisonpro.coder@gmail.com>
- * @copyright  2018 RoboticEvent
+ * @copyright  2018 TCCSolution
  * @version    1.0.0
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent;
+namespace TCCSolution;
 
 class Tools {
 

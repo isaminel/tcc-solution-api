@@ -7,9 +7,9 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent;
+namespace TCCSolution;
 
-use RoboticEvent\Api;
+use TCCSolution\Api;
 
 abstract class Route
 {

@@ -7,7 +7,7 @@ index 2fdd746..159363c 100644
   */
  
 -namespace TCCSolution;
-+namespace RoboticEvent;
++namespace TCCSolution;
  
  use Slim\Http\Util;
  use Slim\Slim;
@@ -15,10 +15,10 @@ index 2fdd746..159363c 100644
 -use TCCSolution\Slim\BaseResponse;
 -use TCCSolution\Slim\BaseRequest;
 -use TCCSolution\Slim\Environment;
-+use RoboticEvent\Util\ArrayUtils;
-+use RoboticEvent\Slim\BaseResponse;
-+use RoboticEvent\Slim\BaseRequest;
-+use RoboticEvent\Slim\Environment;
++use TCCSolution\Util\ArrayUtils;
++use TCCSolution\Slim\BaseResponse;
++use TCCSolution\Slim\BaseRequest;
++use TCCSolution\Slim\Environment;
  
  /**
   * Api
@@ -30,22 +30,22 @@ index 7de11dc..259a826 100644
  <?php
  /**
 - * @package    TCCSolution
-+ * @package    RoboticEvent
++ * @package    TCCSolution
   * @author     davisonpro.coder@gmail.com
 - * @copyright  2018 TCCSolution
-+ * @copyright  2018 RoboticEvent
++ * @copyright  2018 TCCSolution
   * @version    1.0.0
   * @since      File available since Release 1.0.0
   */
  
 -namespace TCCSolution\Database;
-+namespace RoboticEvent\Database;
++namespace TCCSolution\Database;
  
  use Db;
  use DbPDO;
  use DbMySQLi;
 -use TCCSolution\Tools;
-+use RoboticEvent\Tools;
++use TCCSolution\Tools;
  
  /**
   * Class DbCore
@@ -57,20 +57,20 @@ index 70ccc8e..f0ac50d 100644
  <?php
  /**
 - * @package    TCCSolution
-+ * @package    RoboticEvent
++ * @package    TCCSolution
   * @author     davisonpro.coder@gmail.com
 - * @copyright  2018 TCCSolution
-+ * @copyright  2018 RoboticEvent
++ * @copyright  2018 TCCSolution
   * @version    1.0.0
   * @since      File available since Release 1.0.0
   */
  
 -namespace TCCSolution\Database;
-+namespace RoboticEvent\Database;
++namespace TCCSolution\Database;
  
  use Db;
 -use TCCSolution\Tools;
-+use RoboticEvent\Tools;
++use TCCSolution\Tools;
  
  /**
   * Class DbMySQLiCore
@@ -82,16 +82,16 @@ index 23ea9e9..85a5e96 100644
  <?php
  /**
 - * @package    TCCSolution
-+ * @package    RoboticEvent
++ * @package    TCCSolution
   * @author     davisonpro.coder@gmail.com
 - * @copyright  2018 TCCSolution
-+ * @copyright  2018 RoboticEvent
++ * @copyright  2018 TCCSolution
   * @version    1.0.0
   * @since      File available since Release 1.0.0
   */
  
 -namespace TCCSolution\Database;
-+namespace RoboticEvent\Database;
++namespace TCCSolution\Database;
  
  use Db;
  use \PDO;
@@ -103,16 +103,16 @@ index add5e2b..a17478b 100644
  <?php
  /**
 - * @package    TCCSolution
-+ * @package    RoboticEvent
++ * @package    TCCSolution
   * @author     davisonpro.coder@gmail.com
 - * @copyright  2018 TCCSolution
-+ * @copyright  2018 RoboticEvent
++ * @copyright  2018 TCCSolution
   * @version    1.0.0
   * @since      File available since Release 1.0.0
   */
  
 -namespace TCCSolution\Database;
-+namespace RoboticEvent\Database;
++namespace TCCSolution\Database;
  
  /**
   * SQL query builder
@@ -125,17 +125,17 @@ index 863c716..9cf370c 100644
   */
  
 -namespace TCCSolution; 
-+namespace RoboticEvent; 
++namespace TCCSolution; 
  
  use Db;
 -use TCCSolution\Database\DbQuery;
 -use TCCSolution\Validate;
 -use TCCSolution\Database\EntityInterface;
 -use TCCSolution\Database\EntityMapper;
-+use RoboticEvent\Database\DbQuery;
-+use RoboticEvent\Validate;
-+use RoboticEvent\Database\EntityInterface;
-+use RoboticEvent\Database\EntityMapper;
++use TCCSolution\Database\DbQuery;
++use TCCSolution\Validate;
++use TCCSolution\Database\EntityInterface;
++use TCCSolution\Database\EntityMapper;
  
  /**
   * ObjectModel
@@ -144,7 +144,7 @@ index 863c716..9cf370c 100644
          // Check field validator
          if (!in_array('validate', $skip) && !empty($data['validate'])) {
 -            if (!method_exists('TCCSolution\Validate', $data['validate'])) {
-+            if (!method_exists('RoboticEvent\Validate', $data['validate'])) {
++            if (!method_exists('TCCSolution\Validate', $data['validate'])) {
                  throw new \Exception(
                      sprintf('Validation function not found: %s.', $data['validate'])
                  );
@@ -153,12 +153,12 @@ index 863c716..9cf370c 100644
                  $res = true;
                  if (Tools::strtolower($data['validate']) == 'iscleanhtml') {
 -                    if (!call_user_func(array('TCCSolution\Validate', $data['validate']), $value, $hp_allow_html_iframe)) {
-+                    if (!call_user_func(array('RoboticEvent\Validate', $data['validate']), $value, $hp_allow_html_iframe)) {
++                    if (!call_user_func(array('TCCSolution\Validate', $data['validate']), $value, $hp_allow_html_iframe)) {
                          $res = false;
                      }
                  } else {
 -                    if (!call_user_func(array('TCCSolution\Validate', $data['validate']), $value)) {
-+                    if (!call_user_func(array('RoboticEvent\Validate', $data['validate']), $value)) {
++                    if (!call_user_func(array('TCCSolution\Validate', $data['validate']), $value)) {
                          $res = false;
                      }
                  }
@@ -171,10 +171,10 @@ index 2f89a24..4c655f5 100644
   */
  
 -namespace TCCSolution;
-+namespace RoboticEvent;
++namespace TCCSolution;
  
 -use TCCSolution\Api;
-+use RoboticEvent\Api;
++use TCCSolution\Api;
  
  abstract class Route
  {
@@ -187,7 +187,7 @@ index e722527..da8b1f6 100644
   */
  
 -namespace TCCSolution\Slim;
-+namespace RoboticEvent\Slim;
++namespace TCCSolution\Slim;
  
  use Slim\Http\Request;
  use Slim\Http\Util;
@@ -200,7 +200,7 @@ index 702b03e..0c0b22b 100644
   */
  
 -namespace TCCSolution\Slim;
-+namespace RoboticEvent\Slim;
++namespace TCCSolution\Slim;
  
  use Slim\Http\Response;
  
@@ -213,12 +213,12 @@ index eaea732..e727e1e 100644
   */
  
 -namespace TCCSolution\Slim;
-+namespace RoboticEvent\Slim;
++namespace TCCSolution\Slim;
  
 -use TCCSolution\Util\ArrayUtils;
 -use TCCSolution\Util\StringUtils;
-+use RoboticEvent\Util\ArrayUtils;
-+use RoboticEvent\Util\StringUtils;
++use TCCSolution\Util\ArrayUtils;
++use TCCSolution\Util\StringUtils;
  
  use Slim\Middleware;
  
@@ -231,7 +231,7 @@ index 9b8456f..8e638b4 100644
   */
  
 -namespace TCCSolution\Slim;
-+namespace RoboticEvent\Slim;
++namespace TCCSolution\Slim;
  
  /**
   * Application Environment variables
@@ -243,16 +243,16 @@ index 951270f..3ce1612 100644
  <?php 
  /**
 - * @package    TCCSolution
-+ * @package    RoboticEvent
++ * @package    TCCSolution
   * @author     Davison Pro <davisonpro.coder@gmail.com>
 - * @copyright  2018 TCCSolution
-+ * @copyright  2018 RoboticEvent
++ * @copyright  2018 TCCSolution
   * @version    1.0.0
   * @since      File available since Release 1.0.0
   */
  
 -namespace TCCSolution;
-+namespace RoboticEvent;
++namespace TCCSolution;
  
  class Tools {
  
@@ -265,7 +265,7 @@ index 50989d6..e50419b 100644
   */
  
 -namespace TCCSolution\Util;
-+namespace RoboticEvent\Util;
++namespace TCCSolution\Util;
  
  class ArrayUtils {
      /**
@@ -278,7 +278,7 @@ index 60b3597..9728488 100644
   */
  
 -namespace TCCSolution\Util;
-+namespace RoboticEvent\Util;
++namespace TCCSolution\Util;
  
  class StringUtils
  {
@@ -290,25 +290,25 @@ index d42f16b..9e8d9ae 100644
  <?php
  /**
 - * @package    TCCSolution
-+ * @package    RoboticEvent
++ * @package    TCCSolution
   * @author     Davison Pro <davisonpro.coder@gmail.com>
 - * @copyright  2018 TCCSolution
-+ * @copyright  2018 RoboticEvent
++ * @copyright  2018 TCCSolution
   * @version    1.0.0
   * @since      File available since Release 1.0.0
   */
  
 -namespace TCCSolution;
-+namespace RoboticEvent;
++namespace TCCSolution;
  
 -use TCCSolution\Tools;
-+use RoboticEvent\Tools;
++use TCCSolution\Tools;
  
  /**
   * Class Validate
   *
 - * @package TCCSolution
-+ * @package RoboticEvent
++ * @package TCCSolution
   */
  class Validate
  {
@@ -321,7 +321,7 @@ index 58959b0..8d26685 100644
   */
  
 -/*namespace TCCSolution\v1;
-+/*namespace RoboticEvent\v1;
++/*namespace TCCSolution\v1;
  
  use Db;
 -use TCCSolution\Route;
@@ -330,12 +330,12 @@ index 58959b0..8d26685 100644
 -use TCCSolution\Entities\Team as TeamObject;
 -use TCCSolution\Util\ArrayUtils;
 -use TCCSolution\Validate;
-+use RoboticEvent\Route;
-+use RoboticEvent\Database\DbQuery;
-+use RoboticEvent\Entities\Person as PersonObject;
-+use RoboticEvent\Entities\Team as TeamObject;
-+use RoboticEvent\Util\ArrayUtils;
-+use RoboticEvent\Validate;
++use TCCSolution\Route;
++use TCCSolution\Database\DbQuery;
++use TCCSolution\Entities\Person as PersonObject;
++use TCCSolution\Entities\Team as TeamObject;
++use TCCSolution\Util\ArrayUtils;
++use TCCSolution\Validate;
  
  class Person extends Route {
  

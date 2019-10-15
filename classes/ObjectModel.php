@@ -7,13 +7,13 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent; 
+namespace TCCSolution; 
 
 use Db;
-use RoboticEvent\Database\DbQuery;
-use RoboticEvent\Validate;
-use RoboticEvent\Database\EntityInterface;
-use RoboticEvent\Database\EntityMapper;
+use TCCSolution\Database\DbQuery;
+use TCCSolution\Validate;
+use TCCSolution\Database\EntityInterface;
+use TCCSolution\Database\EntityMapper;
 
 /**
  * ObjectModel
@@ -449,7 +449,7 @@ class ObjectModel {
 
         // Check field validator
         if (!in_array('validate', $skip) && !empty($data['validate'])) {
-            if (!method_exists('RoboticEvent\Validate', $data['validate'])) {
+            if (!method_exists('TCCSolution\Validate', $data['validate'])) {
                 throw new \Exception(
                     sprintf('Validation function not found: %s.', $data['validate'])
                 );
@@ -458,11 +458,11 @@ class ObjectModel {
             if (!empty($value)) {
                 $res = true;
                 if (Tools::strtolower($data['validate']) == 'iscleanhtml') {
-                    if (!call_user_func(array('RoboticEvent\Validate', $data['validate']), $value, $hp_allow_html_iframe)) {
+                    if (!call_user_func(array('TCCSolution\Validate', $data['validate']), $value, $hp_allow_html_iframe)) {
                         $res = false;
                     }
                 } else {
-                    if (!call_user_func(array('RoboticEvent\Validate', $data['validate']), $value)) {
+                    if (!call_user_func(array('TCCSolution\Validate', $data['validate']), $value)) {
                         $res = false;
                     }
                 }

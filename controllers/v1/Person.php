@@ -7,15 +7,15 @@
  * @since      File available since Release 1.0.0
  */
 
-/*namespace RoboticEvent\v1;
+/*namespace TCCSolution\v1;
 
 use Db;
-use RoboticEvent\Route;
-use RoboticEvent\Database\DbQuery;
-use RoboticEvent\Entities\Person as PersonObject;
-use RoboticEvent\Entities\Team as TeamObject;
-use RoboticEvent\Util\ArrayUtils;
-use RoboticEvent\Validate;
+use TCCSolution\Route;
+use TCCSolution\Database\DbQuery;
+use TCCSolution\Entities\Person as PersonObject;
+use TCCSolution\Entities\Team as TeamObject;
+use TCCSolution\Util\ArrayUtils;
+use TCCSolution\Validate;
 
 class Person extends Route {
 

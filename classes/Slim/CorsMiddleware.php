@@ -7,10 +7,10 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent\Slim;
+namespace TCCSolution\Slim;
 
-use RoboticEvent\Util\ArrayUtils;
-use RoboticEvent\Util\StringUtils;
+use TCCSolution\Util\ArrayUtils;
+use TCCSolution\Util\StringUtils;
 
 use Slim\Middleware;
 

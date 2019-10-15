@@ -7,7 +7,7 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent\Util;
+namespace TCCSolution\Util;
 
 class StringUtils
 {

@@ -1,18 +1,18 @@
 <?php
 /**
- * @package    RoboticEvent
+ * @package    TCCSolution
  * @author     davisonpro.coder@gmail.com
- * @copyright  2018 RoboticEvent
+ * @copyright  2018 TCCSolution
  * @version    1.0.0
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent\Database;
+namespace TCCSolution\Database;
 
 use Db;
 use DbPDO;
 use DbMySQLi;
-use RoboticEvent\Tools;
+use TCCSolution\Tools;
 
 /**
  * Class DbCore

@@ -7,7 +7,7 @@
  * @since      File available since Release 1.0.0
  */
 
-namespace RoboticEvent\Slim;
+namespace TCCSolution\Slim;
 
 use Slim\Http\Response;
 
