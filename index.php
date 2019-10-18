@@ -80,8 +80,9 @@ $requestPayload = $api->request->post();
 
 $api->group('/api', function () use ($api) {
 	$api->group('/v1', function () use ($api) {
-		/** Get all People */
-		//$api->get('/people?', '\TCCSolution\v1\Person:getPeople')->name('get_people');
+
+		/** Get all Ideas */
+		$api->get('/idea?', '\TCCSolution\v1\Idea:getIdeas')->name('get_ideas');
 		
 		/** Get people by Team */
 		//$api->get('/people/team/:teamId:?', '\TCCSolution\v1\Person:getPeople')->name('get_people');
@@ -92,8 +93,8 @@ $api->group('/api', function () use ($api) {
 		/** Get person by Email */
 		//$api->get('/people/email?', '\TCCSolution\v1\Person:getPersonByEmail')->name('get_people_by_email');
 
-		/** Add a Person */
-		//$api->post('/people?', '\TCCSolution\v1\Person:addPerson')->name('add_people');
+		/** Add an Idea */
+		$api->post('/idea?', '\TCCSolution\v1\Idea:addIdea')->name('add_idea');
 	
 		// /** Get a single Person */
 		//$api->get('/people/:personId?', '\TCCSolution\v1\Person:getPerson')->name('get_person');
@@ -170,19 +171,21 @@ $api->group('/api', function () use ($api) {
 		/** Asaas */
 		//$api->put('/asaas/client/:personId?', '\TCCSolution\v1\Asaas:addClient')->name('add_client');
 
+		/** Get all Ideas */
+		//$api->get('/people?', '\TCCSolution\v1\Person:getPeople')->name('get_people');
 
 		/** Grouping Category Endpoints */
 		$api->group('/category', function () use ($api) {
-			/** Get all Categories */
-			$api->get('/?', '\TCCSolution\v1\Category:getCategory')->name('get_category');
+		/** Get all Categories */
+		$api->get('/?', '\TCCSolution\v1\Category:getCategory')->name('get_category');
 
-			/** Categories by Event */
-			//$api->get('/event/:eventId?', '\TCCSolution\v1\Category:getCategoryByEventId')->name('get_category_by_event_id');
-			
-			/** Add a Category */
-			$api->post('/?', '\TCCSolution\v1\Category:addCategory')->name('add_category');
-	
-		});
+		/** Categories by Event */
+		//$api->get('/event/:eventId?', '\TCCSolution\v1\Category:getCategoryByEventId')->name('get_category_by_event_id');
+		
+		/** Add a Category */
+		$api->post('/?', '\TCCSolution\v1\Category:addCategory')->name('add_category');
+
+	});
 		
 	});
 });

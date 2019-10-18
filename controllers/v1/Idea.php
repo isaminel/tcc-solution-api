@@ -17,8 +17,29 @@ use TCCSolution\Util\ArrayUtils;
 use TCCSolution\Validate;
 
 class Idea extends Route {
-	public function getIdea() {
+	public function getIdeas() {
 		$api = $this->api;
+
+		$payload = $api->request()->get();
+
+		if (ArrayUtils::has($payload, 'title')) {
+			$title = ArrayUtils::get($payload, 'title');
+			$sql->where('title LIKE "%' . pSQL($title) . '%"');
+		}
+
+		if (ArrayUtils::has($payload, 'category')) {
+			$category = ArrayUtils::get($payload, 'category');
+			$sql->from('category');
+			$sql->where('category.name LIKE "%' . pSQL($category) . '%"');
+			$sql->where('category.id = idea.category_id');
+		}
+
+		if (ArrayUtils::has($payload, 'user')) {
+			$user = ArrayUtils::get($payload, 'user');
+			$sql->from('user');
+			$sql->where('user.name LIKE "%' . pSQL($user) . '%"');
+			$sql->where('user.id = idea.user_id');
+		}
 
 		// Build query
 		$sql = new DbQuery();
@@ -35,14 +56,22 @@ class Idea extends Route {
 	}
 
 	public function addIdea() {
+		error_log("alooooo");
 		$api = $this->api;
 		$payload = $api->request()->post(); 
-
-		$name = ArrayUtils::get($payload, 'name');
-		$email = ArrayUtils::get($payload, 'email');
-		$date_of_birth = ArrayUtils::get($payload, 'date_of_birth');
-		$login = ArrayUtils::get($payload, 'login');
-		$password = ArrayUtils::get($payload, 'password');
+		error_log(print_r($payload,1));
+		if (ArrayUtils::has($payload, 'title')) {
+			$title = ArrayUtils::get($payload, 'title');
+		} else {
+			return $api->response([
+				'success' => false,
+				'message' => 'Título não pode ser nulo'
+			]);
+		}
+		
+		$description = ArrayUtils::get($payload, 'description');
+		$category_id = ArrayUtils::get($payload, 'category_id');
+		$user_id = ArrayUtils::get($payload, 'user_id');
 
 		$idea = new IdeaObject();
 		$idea->title = $title;
@@ -56,8 +85,13 @@ class Idea extends Route {
 		if (!$ok) {
 			return $api->response([
 				'success' => false,
-				'message' => 'Não foi possível criar a ideia'
-			]);
+				'message' => 'Não foi possível criar a ideia',
+				'title' => ArrayUtils::get($payload, 'title'),
+				'description' => $description,
+				'category_id' => $category_id,
+				'user_id' => $user_id,
+				'payload' => $payload
+				]);
 		}
 
 		return $api->response([

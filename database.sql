@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 CREATE TABLE `idea` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
   `category_id` INT(11) NOT NULL,
@@ -42,23 +42,14 @@ CREATE TABLE IF NOT EXISTS `following` (
   FOREIGN KEY (`idea_id`) REFERENCES `idea`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
-INSERT INTO `category` (`name`, `description`, `date_add`) VALUES
-('Sumô Mini - 500g Junior', '2019-09-17 20:05:00'),
-('Sumô Mini - 500g Autônomo', '2019-09-17 20:05:00'),
-('Sumô - 1kg Lego', '2019-09-17 20:05:00'),
-('Sumô - 3kg Autônomo', '2019-09-17 20:05:00'),
-('Sumô - 3kg R/C', '2019-09-17 20:05:00'),
-('Seguidor de Linha - Júnior', '2019-09-17 20:05:00'),
-('Seguidor de Linha - Pro', '2019-09-17 20:05:00'),
-('Trekking - Pro', '2019-09-17 20:05:00'),
-('Combate Antweight - 1lb (454g) - Júnior', '2019-09-17 20:05:00'),
-('Combate Antweight - 1lb (454g)', '2019-09-17 20:05:00'),
-('Combate Beetleweight - 3lb (1,36kg)', '2019-09-17 20:05:00'),
-('Combate Hobbyweight - 12lb (5,44kg)', '2019-09-17 20:05:00'),
-('Futebol - Simulação 2D', '2019-09-17 20:05:00'),
-('Futebol - Very Small Size League', '2019-09-17 20:05:00'),
-('Futebol - Very Small Size League R/C', '2019-09-17 20:05:00'),
-('Artbot - Kinetic', '2019-09-17 20:05:00'),
-('Hockey', '2019-09-17 20:05:00');
+INSERT INTO `category` (`name`, `date_add`) VALUES
+('Engenharia de Software', '2019-09-17 20:05:00'),
+('Robótica', '2019-09-17 20:05:00'),
+('IoT', '2019-09-17 20:05:00'),
+('Inteligência Artificial', '2019-09-17 20:05:00'),
+('Literatura', '2019-09-17 20:05:00'),
+('Automação', '2019-09-17 20:05:00')
+('Mecânica', '2019-09-17 20:05:00');
 
-
+INSERT INTO `user` (`name`, `email`, `date_of_birth`, `login`, `password`, `date_add`) VALUES
+('Isabelle', 'isabelleminel@gmail.com', '1998-04-10 16:15:00', 'isaminel', '123', '2019-09-17 20:05:00');
