@@ -80,7 +80,7 @@ class ArrayUtils {
 
     public static function has($array, $key)
     {
-        error_log(print_r($array));
+        //error_log(print_r($array));
         if (static::exists($array, $key)) {
             return true;
         }

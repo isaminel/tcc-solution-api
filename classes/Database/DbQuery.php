@@ -264,7 +264,7 @@ class DbQuery
      * @return string
      * @throws \Exception
      */
-    public function build()
+    public function build($or_connect = false)
     {
         if ($this->query['type'] == 'SELECT') {
             $sql = 'SELECT '.((($this->query['select'])) ? implode(",\n", $this->query['select']) : '*')."\n";
@@ -283,7 +283,8 @@ class DbQuery
         }
 
         if ($this->query['where']) {
-            $sql .= 'WHERE ('.implode(') AND (', $this->query['where']).")\n";
+            $connect = $or_connect ? ') OR (' : ') AND (';
+            $sql .= 'WHERE ('.implode($connect, $this->query['where']).")\n";
         }
 
         if ($this->query['group']) {

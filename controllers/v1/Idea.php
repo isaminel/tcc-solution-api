@@ -22,31 +22,46 @@ class Idea extends Route {
 
 		$payload = $api->request()->get();
 
-		if (ArrayUtils::has($payload, 'title')) {
-			$title = ArrayUtils::get($payload, 'title');
-			$sql->where('title LIKE "%' . pSQL($title) . '%"');
-		}
-
-		if (ArrayUtils::has($payload, 'category')) {
-			$category = ArrayUtils::get($payload, 'category');
-			$sql->from('category');
-			$sql->where('category.name LIKE "%' . pSQL($category) . '%"');
-			$sql->where('category.id = idea.category_id');
-		}
-
-		if (ArrayUtils::has($payload, 'user')) {
-			$user = ArrayUtils::get($payload, 'user');
-			$sql->from('user');
-			$sql->where('user.name LIKE "%' . pSQL($user) . '%"');
-			$sql->where('user.id = idea.user_id');
-		}
-
 		// Build query
 		$sql = new DbQuery();
 		// Build SELECT
 		$sql->select('idea.*');
 		// Build FROM
 		$sql->from('idea', 'idea');
+		$sql->select('category.name as category_name');
+		$sql->from('category');
+		$sql->where('category.id = idea.category_id');
+		$sql->from('user');
+		$sql->select('user.name as user_name');
+		$sql->where('user.id = idea.user_id');
+		// Build JOIN
+
+		if ($this->hasAllFilters($payload)) {
+			$user = ArrayUtils::get($payload, 'user');
+			$title = ArrayUtils::get($payload, 'title');
+			$category = ArrayUtils::get($payload, 'category');
+			$sql->where('(user.name LIKE "%' . pSQL($user) . '%") OR (category.name LIKE "%' . pSQL($category) . '%") OR (title LIKE "%' . pSQL($title) . '%")');
+
+		} else {
+			if (ArrayUtils::has($payload, 'title')) {
+				$title = ArrayUtils::get($payload, 'title');
+				$sql->where('title LIKE "%' . pSQL($title) . '%"');
+			}
+
+			if (ArrayUtils::has($payload, 'category')) {
+				$category = ArrayUtils::get($payload, 'category');
+				
+				$sql->where('category.name LIKE "%' . pSQL($category) . '%"');	
+			}
+
+			if (ArrayUtils::has($payload, 'user')) {
+				$user = ArrayUtils::get($payload, 'user');
+				
+				$sql->where('user.name LIKE "%' . pSQL($user) . '%"');
+			}
+		}
+
+		error_log($sql);
 		$idea = Db::getInstance()->executeS($sql);
 
 		return $api->response([
@@ -55,11 +70,24 @@ class Idea extends Route {
 		]);
 	}
 
+	private function hasAllFilters($payload) {
+		$hasAllFilters = false;
+
+		if(ArrayUtils::has($payload, 'title')  &&
+		   ArrayUtils::has($payload, 'category') && 
+		   ArrayUtils::has($payload, 'user')) {
+			  $hasAllFilters = true;
+		  }
+
+		  return $hasAllFilters;
+	}
+
 	public function addIdea() {
-		error_log("alooooo");
+		//error_log("alooooo");
 		$api = $this->api;
 		$payload = $api->request()->post(); 
-		error_log(print_r($payload,1));
+		//error_log(print_r($payload,1));
+		
 		if (ArrayUtils::has($payload, 'title')) {
 			$title = ArrayUtils::get($payload, 'title');
 		} else {

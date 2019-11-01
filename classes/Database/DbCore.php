@@ -570,10 +570,10 @@ abstract class DbCore
      * @return array|false|null|mysqli_result|PDOStatement|resource
      * @throws \Exception
      */
-    public function executeS($sql, $array = true, $use_cache = true)
+    public function executeS($sql, $or_connect = false, $array = true, $use_cache = true)
     {
         if ($sql instanceof DbQuery) {
-            $sql = $sql->build();
+            $sql = $sql->build($or_connect);
         }
 
         $this->result = false;
