@@ -26,15 +26,15 @@ class Idea extends Route {
 		$sql = new DbQuery();
 		// Build SELECT
 		$sql->select('idea.*');
+		$sql->select('category.name as category_name');
+		$sql->select('user.name as user_name');
 		// Build FROM
 		$sql->from('idea', 'idea');
-		$sql->select('category.name as category_name');
 		$sql->from('category');
-		$sql->where('category.id = idea.category_id');
 		$sql->from('user');
-		$sql->select('user.name as user_name');
-		$sql->where('user.id = idea.user_id');
 		// Build JOIN
+		$sql->where('category.id = idea.category_id');
+		$sql->where('user.id = idea.user_id');
 
 		if ($this->hasAllFilters($payload)) {
 			$user = ArrayUtils::get($payload, 'user');
